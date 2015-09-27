@@ -1,13 +1,17 @@
 package com.example.radek.apodpocket.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Radek on 27/09/15.
  */
-public class APOD {
+public class APOD implements Serializable {
 
     private String url;
     private String media_type;
+    private String title;
     private String explanation;
+    private String concepts;
 
     public APOD(String url, String media_type, String explanation) {
         this.url = url;
@@ -29,6 +33,23 @@ public class APOD {
 
     public void setExplanation(String explanation) {
         this.explanation = explanation;
+    }
+
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getConcepts() {
+        return concepts;
+    }
+
+    public void setConcepts(String concepts) {
+        this.concepts = concepts;
     }
 
     public String getUrl() {

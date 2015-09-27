@@ -1,6 +1,7 @@
 package com.example.radek.apodpocket.network;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -15,6 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.radek.apodpocket.APODList;
 import com.example.radek.apodpocket.model.APOD;
+import com.example.radek.apodpocket.model.HomeResponse;
 
 import java.util.ArrayList;
 
@@ -33,6 +35,19 @@ public class APIUtils {
     public String getGlobalResponse(){
         return globalResponse;
     }
+
+    public void openAPODrequest(){
+//        VolleyApplication.getInstance().getRequestQueue().addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
+//            @Override
+//            public void onRequestFinished(Request<Object> request) {
+//
+//
+//                Toast.makeText(mActivity, "KONIEC", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+        getAPODS();
+    }
     public void getAPODS(){
 
         ArrayList<String> uriList=APODRequest.getRequests();
@@ -42,8 +57,10 @@ public class APIUtils {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            //TODO add user id to string
-                            Toast.makeText(mActivity, response, Toast.LENGTH_SHORT).show();
+
+                            //APOD apodElement = new APOD("","","");
+                            APOD apodItem = HomeResponse.fromJsonObject(response);
+                            mActivity.saveData(apodItem);
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -51,8 +68,8 @@ public class APIUtils {
                     Toast.makeText(mActivity, error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-
             VolleyApplication.getInstance().getRequestQueue().add(request);
+
         }
 
 
