@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.example.radek.apodpocket.R;
+import com.example.radek.apodpocket.images.ImageCacheManager;
 import com.example.radek.apodpocket.model.APOD;
 
 import java.util.ArrayList;
@@ -53,6 +55,7 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
     public void onBindViewHolder(APODAdapter.ViewHolder viewHolder, int position) {
         if (mDataset != null) {
             viewHolder.mTitle.setText(mDataset.get(position).getTitle());
+            viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), ImageCacheManager.getInstance().getImageLoader());
         }
     }
 
@@ -66,9 +69,11 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView mTitle;
+        NetworkImageView mElementImage;
         public ViewHolder(View v, Context context) {
             super(v);
             mTitle = (TextView) v.findViewById(R.id.apod_element_title_tv);
+            mElementImage = (NetworkImageView) v.findViewById(R.id.apod_element_iv);
 
         }
     }

@@ -26,7 +26,6 @@ public class APODList extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pictures_list);
-        APODRequest apodRequest=new APODRequest();
         APIUtils apiUtils=new APIUtils(this);
         apiUtils.openAPODrequest();
 

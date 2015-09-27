@@ -17,6 +17,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.radek.apodpocket.APODList;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.model.HomeResponse;
+import com.example.radek.apodpocket.model.RequestManager;
 
 import java.util.ArrayList;
 
@@ -57,8 +58,6 @@ public class APIUtils {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-
-                            //APOD apodElement = new APOD("","","");
                             APOD apodItem = HomeResponse.fromJsonObject(response);
                             mActivity.saveData(apodItem);
                         }
@@ -68,7 +67,7 @@ public class APIUtils {
                     Toast.makeText(mActivity, error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-            VolleyApplication.getInstance().getRequestQueue().add(request);
+            RequestManager.getRequestQueue().add(request);
 
         }
 
