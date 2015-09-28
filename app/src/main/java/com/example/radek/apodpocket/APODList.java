@@ -68,7 +68,7 @@ public class APODList extends Activity {
 
 
                 if (loading) {
-                    if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                    if ((visibleItemCount + pastVisiblesItems) >= totalItemCount-5) {
                         apiUtils.openAPODrequest();
                     }
                 }

@@ -74,13 +74,11 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
             viewHolder.mDate.setText(mDataset.get(position).getDate());
             viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), ImageCacheManager.getInstance().getImageLoader());
             Animation mFadeAnimation  = AnimationUtils.loadAnimation(mContext,R.anim.blink);
-
             int intMin = (int) (long) mFadeAnimation.getDuration() - 200;
             int intMax = (int) (long) mFadeAnimation.getDuration() + 200;
 
             int randNum = intMin + (int)(Math.random() * ((intMax - intMin) + 1));
             mFadeAnimation.setDuration(randNum);
-
             viewHolder.mListLayout.startAnimation(mFadeAnimation);
         }
     }
