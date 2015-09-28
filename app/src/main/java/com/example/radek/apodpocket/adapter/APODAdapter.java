@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.andexert.library.RippleView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.example.radek.apodpocket.R;
 import com.example.radek.apodpocket.images.ImageCacheManager;
@@ -71,7 +73,6 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
             viewHolder.mTitle.setText(mDataset.get(position).getTitle());
             viewHolder.mDate.setText(mDataset.get(position).getDate());
             viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), ImageCacheManager.getInstance().getImageLoader());
-
             Animation mFadeAnimation  = AnimationUtils.loadAnimation(mContext,R.anim.blink);
 
             int intMin = (int) (long) mFadeAnimation.getDuration() - 200;
@@ -80,7 +81,7 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
             int randNum = intMin + (int)(Math.random() * ((intMax - intMin) + 1));
             mFadeAnimation.setDuration(randNum);
 
-            viewHolder.mElementImage.startAnimation(mFadeAnimation);
+            viewHolder.mListLayout.startAnimation(mFadeAnimation);
         }
     }
 
@@ -94,14 +95,18 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView mTitle;
-        TextView mDate
-                ;
+        TextView mDate;
+        RelativeLayout mListLayout;
         NetworkImageView mElementImage;
+        RippleView mRippleView;
+         ;
         public ViewHolder(View v, Context context) {
             super(v);
             mTitle = (TextView) v.findViewById(R.id.apod_element_title_tv);
             mDate = (TextView) v.findViewById(R.id.apod_element_date_tv);
             mElementImage = (NetworkImageView) v.findViewById(R.id.apod_element_iv);
+            mListLayout = (RelativeLayout) v.findViewById(R.id.apods_list_rl);
+            mRippleView = (RippleView) v.findViewById(R.id.ripple_view);
 
 
         }

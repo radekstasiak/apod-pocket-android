@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/apods_list_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.andexert.library.RippleView
+            android:id="@+id/ripple_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            rv_rippleDuration="1"
+            android:layout_margin="5dp"
+            rv_centered="true">
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/apod_element_iv"
         android:layout_width="match_parent"
@@ -37,4 +48,8 @@
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:background="@drawable/apod_shadow"/>
+        </com.andexert.library.RippleView>
+
+    </RelativeLayout>
+
 </RelativeLayout>
