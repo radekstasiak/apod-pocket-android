@@ -8,15 +8,16 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Radek on 27/09/15.
  */
 public class APODRequest {
 
-    public static ArrayList<String> getRequests(){
+    public static HashMap<String,String> getRequests(){
 
-        ArrayList<String> uriList= new ArrayList<String>();
+        HashMap<String,String> uriList= new HashMap<String,String>();
 
 
         for(int i=0; i < Constants.NASA_API_RESPONSE_NUMBERY;i++) {
@@ -26,7 +27,7 @@ public class APODRequest {
                     Constants.NASA_API_KEY,
                     date.toString(fmt));
 
-            uriList.add(uri);
+            uriList.put(date.toString(fmt),uri);
         }
 
 

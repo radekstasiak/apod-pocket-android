@@ -20,6 +20,8 @@ import com.example.radek.apodpocket.model.HomeResponse;
 import com.example.radek.apodpocket.model.RequestManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Created by Radek on 16/09/15.
@@ -50,15 +52,24 @@ public class APIUtils {
         getAPODS();
     }
     public void getAPODS(){
+        APODRequest apodRequest;
+        HashMap<String,String> uriList=APODRequest.getRequests();
 
-        ArrayList<String> uriList=APODRequest.getRequests();
 
-        for(String uri: uriList) {
-            StringRequest request = new StringRequest(Request.Method.GET, uri,
+        Iterator it = uriList.entrySet().iterator();
+        while (it.hasNext()) {
+            final HashMap.Entry pair = (HashMap.Entry)it.next();
+            System.out.println(pair.getKey() + " = " + pair.getValue());
+
+
+
+            StringRequest request = new StringRequest(Request.Method.GET, pair.getValue().toString(),
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+
                             APOD apodItem = HomeResponse.fromJsonObject(response);
+                            apodItem.setDate(pair.getKey().toString());
                             mActivity.saveData(apodItem);
                         }
                     }, new Response.ErrorListener() {
@@ -69,6 +80,8 @@ public class APIUtils {
             });
             RequestManager.getRequestQueue().add(request);
 
+
+            it.remove();
         }
 
 

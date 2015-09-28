@@ -13,6 +13,8 @@ import com.example.radek.apodpocket.images.ImageCacheManager;
 import com.example.radek.apodpocket.model.APOD;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by Radek on 27/09/15.
@@ -22,7 +24,6 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
     private ArrayList<APOD> mDataset;
     private Context mContext;
 
-    //private OnItemClickListener mItemClickListener;
     public APODAdapter(Context context) {
         this.mContext = context;
 
@@ -33,14 +34,24 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
             this.mDataset = new ArrayList<APOD>();
         }
         this.mDataset.add(apodElement);
+        Collections.sort(mDataset, new Comparator<APOD>() {
+
+            public int compare(APOD apod1, APOD apod2) {
+                String obj1 = apod1.getDate();
+                String obj2 = apod2.getDate();
+                if (obj1 == obj2) {
+                    return 0;
+                }
+                if (obj1 == null) {
+                    return -1;
+                }
+                if (obj2 == null) {
+                    return 1;
+                }
+                return obj2.compareTo(obj1);
+            }
+        });
         notifyDataSetChanged();
-//        if (this.mDataset != null) {
-//            this.mDataset.clear();
-//        }
-//        ArrayList<APOD> apodList=new ArrayList<APOD>();
-//        apodList.add(apodElement);
-//        this.mDataset=apodList;
-//        notifyDataSetChanged();
     }
     @Override
     public APODAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -55,6 +66,7 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
     public void onBindViewHolder(APODAdapter.ViewHolder viewHolder, int position) {
         if (mDataset != null) {
             viewHolder.mTitle.setText(mDataset.get(position).getTitle());
+            viewHolder.mDate.setText(mDataset.get(position).getDate());
             viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), ImageCacheManager.getInstance().getImageLoader());
         }
     }
@@ -69,11 +81,15 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
     }
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView mTitle;
+        TextView mDate
+                ;
         NetworkImageView mElementImage;
         public ViewHolder(View v, Context context) {
             super(v);
             mTitle = (TextView) v.findViewById(R.id.apod_element_title_tv);
+            mDate = (TextView) v.findViewById(R.id.apod_element_date_tv);
             mElementImage = (NetworkImageView) v.findViewById(R.id.apod_element_iv);
+
 
         }
     }
