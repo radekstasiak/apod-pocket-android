@@ -3,8 +3,9 @@ package com.example.radek.apodpocket;
 import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -20,13 +21,13 @@ public class APODList extends Activity {
     private RecyclerView mRecyclerView;
     private APODAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    private  APIUtils apiUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pictures_list);
-        APIUtils apiUtils=new APIUtils(this);
+        apiUtils=new APIUtils(this);
         apiUtils.openAPODrequest();
 
         initUI();
@@ -47,7 +48,32 @@ public class APODList extends Activity {
         mAdapter = new APODAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
         //addItemTouchListener();
+        setListener();
 
+    }
+
+    private void setListener() {
+
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            private boolean loading = true;
+            int pastVisiblesItems, visibleItemCount, totalItemCount;
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                visibleItemCount = mLayoutManager.getChildCount();
+                totalItemCount = mLayoutManager.getItemCount();
+                pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+
+
+                if (loading) {
+                    if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                        apiUtils.openAPODrequest();
+                    }
+                }
+            }
+        });
     }
 
     ;

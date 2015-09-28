@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.radek.apodpocket.app.Settings;
 import com.example.radek.apodpocket.images.ImageCacheManager;
 import com.example.radek.apodpocket.model.RequestManager;
 
@@ -25,10 +26,15 @@ public class VolleyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        sInstance=this;
         //mRequestQueue = Volley.newRequestQueue(this);
 
         init();
 
+    }
+
+    public synchronized static VolleyApplication getInstance() {
+        return sInstance;
     }
 
     private void init() {
@@ -48,8 +54,11 @@ public class VolleyApplication extends Application {
 //        return Settings.get();
 //    }
 
-    public synchronized static VolleyApplication getInstance() {
-        return sInstance;
+
+
+
+    public static Settings getSettings() {
+        return Settings.get();
     }
 
     public RequestQueue getRequestQueue() {
