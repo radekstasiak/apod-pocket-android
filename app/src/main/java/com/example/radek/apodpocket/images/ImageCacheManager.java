@@ -95,7 +95,7 @@ public class ImageCacheManager{
                 break;
         }
 
-        mImageLoader = new ImageLoader(RequestManager.getRequestQueue(), mImageCache);
+        mImageLoader = new ImageLoader(VolleyApplication.getInstance().getRequestQueue(), mImageCache);
     }
 
     public Bitmap getBitmap(String url) {

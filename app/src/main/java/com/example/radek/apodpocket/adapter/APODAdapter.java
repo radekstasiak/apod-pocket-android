@@ -1,20 +1,26 @@
 package com.example.radek.apodpocket.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.andexert.library.RippleView;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.example.radek.apodpocket.R;
 import com.example.radek.apodpocket.images.ImageCacheManager;
 import com.example.radek.apodpocket.model.APOD;
+import com.example.radek.apodpocket.model.RequestManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,11 +74,11 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(APODAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(final APODAdapter.ViewHolder viewHolder, final int position) {
         if (mDataset != null) {
             viewHolder.mTitle.setText(mDataset.get(position).getTitle());
             viewHolder.mDate.setText(mDataset.get(position).getDate());
-            viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), ImageCacheManager.getInstance().getImageLoader());
+           // viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), ImageCacheManager.getInstance().getImageLoader());
             Animation mFadeAnimation  = AnimationUtils.loadAnimation(mContext,R.anim.blink);
             int intMin = (int) (long) mFadeAnimation.getDuration() - 200;
             int intMax = (int) (long) mFadeAnimation.getDuration() + 200;
@@ -80,6 +86,28 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
             int randNum = intMin + (int)(Math.random() * ((intMax - intMin) + 1));
             mFadeAnimation.setDuration(randNum);
             viewHolder.mListLayout.startAnimation(mFadeAnimation);
+
+
+            if(viewHolder.imageRequest!=null){
+                viewHolder.imageRequest.cancel();
+            }
+
+            viewHolder.imageRequest = new ImageRequest(mDataset.get(position).getUrl(), new Response.Listener<Bitmap>() {
+                @Override
+                public void onResponse(Bitmap bitmap) {
+                    if (bitmap != null) {
+
+                        viewHolder.mElementImage.setImageBitmap(bitmap);
+                    }
+                }
+            }, 0, 0, null,
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                        }
+                    });
+            RequestManager.getRequestQueue().add(viewHolder.imageRequest);
+
         }
     }
 
@@ -95,14 +123,15 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
         TextView mTitle;
         TextView mDate;
         RelativeLayout mListLayout;
-        NetworkImageView mElementImage;
+        ImageView mElementImage;
         RippleView mRippleView;
+        ImageRequest imageRequest;
          ;
         public ViewHolder(View v, Context context) {
             super(v);
             mTitle = (TextView) v.findViewById(R.id.apod_element_title_tv);
             mDate = (TextView) v.findViewById(R.id.apod_element_date_tv);
-            mElementImage = (NetworkImageView) v.findViewById(R.id.apod_element_iv);
+            mElementImage = (ImageView) v.findViewById(R.id.apod_element_iv);
             mListLayout = (RelativeLayout) v.findViewById(R.id.apods_list_rl);
             mRippleView = (RippleView) v.findViewById(R.id.ripple_view);
 
