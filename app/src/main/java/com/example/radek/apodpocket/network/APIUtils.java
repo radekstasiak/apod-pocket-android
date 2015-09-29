@@ -1,25 +1,18 @@
 package com.example.radek.apodpocket.network;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
 
-import android.app.Activity;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+
 import com.example.radek.apodpocket.APODList;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.model.HomeResponse;
-import com.example.radek.apodpocket.model.RequestManager;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -40,14 +33,6 @@ public class APIUtils {
     }
 
     public void openAPODrequest(){
-//        VolleyApplication.getInstance().getRequestQueue().addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-//            @Override
-//            public void onRequestFinished(Request<Object> request) {
-//
-//
-//                Toast.makeText(mActivity, "KONIEC", Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
         getAPODS();
     }
@@ -78,7 +63,7 @@ public class APIUtils {
                     Toast.makeText(mActivity, error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-            RequestManager.getRequestQueue().add(request);
+            VolleyApplication.getInstance().getRequestQueue().add(request);
 
 
             it.remove();

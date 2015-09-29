@@ -1,7 +1,6 @@
 package com.example.radek.apodpocket.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -9,26 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.andexert.library.RippleView;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.example.radek.apodpocket.R;
-import com.example.radek.apodpocket.images.ImageCacheManager;
-import com.example.radek.apodpocket.images.ImageHelper;
+
 import com.example.radek.apodpocket.model.APOD;
-import com.example.radek.apodpocket.model.RequestManager;
+import com.example.radek.apodpocket.network.VolleyApplication;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Random;
 
 /**
  * Created by Radek on 27/09/15.
@@ -37,13 +31,13 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
 
     private ArrayList<APOD> mDataset;
     private Context mContext;
-    private int itemHeight;
+    private ImageLoader mImageLoader;
 
     public APODAdapter(Context context) {
         this.mContext = context;
         DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
-        itemHeight = Math.round(240 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-        ;
+        mImageLoader = VolleyApplication.getInstance().getImageLoader();
+
 
     }
 
@@ -92,44 +86,20 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
 
             int randNum = intMin + (int)(Math.random() * ((intMax - intMin) + 1));
             mFadeAnimation.setDuration(randNum);
-            //viewHolder.mListLayout.startAnimation(mFadeAnimation);
-
-
             if(viewHolder !=null){
 
                 viewHolder.mListLayout.startAnimation(mFadeAnimation);
-                //viewHolder.mImageContainer.cancelRequest();
-//                viewHolder.imageRequest.cancel();
+
             }
 
-//
-//
-            //viewHolder.imageRequest = new ImageRequest(mDataset.get(position).getUrl(), new Response.Listener<Bitmap>() {
-            ImageCacheManager.getInstance().getImageLoader().get(mDataset.get(position).getUrl(), new ImageLoader.ImageListener() {
-
-
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                }
-
-                @Override
-                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                    viewHolder.mImageContainer = response;
-
-
-                }
-            });
-            //RequestManager.getRequestQueue().add(viewHolder.imageRequest);
+            viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), mImageLoader);
 
             if (viewHolder == null){
 
                 mFadeAnimation.cancel();
                 mFadeAnimation.reset();
             }
-            if(viewHolder.mImageContainer!=null){
-                viewHolder.mElementImage.setImageUrl(viewHolder.mImageContainer.getRequestUrl(), ImageCacheManager.getInstance().getImageLoader());
-            }
+
         }
     }
 
@@ -147,7 +117,6 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
         RelativeLayout mListLayout;
         NetworkImageView mElementImage;
         RippleView mRippleView;
-        ImageLoader.ImageContainer mImageContainer;
          ;
         public ViewHolder(View v, Context context) {
             super(v);

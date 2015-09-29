@@ -3,9 +3,9 @@ package com.example.radek.apodpocket.images;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Log;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.example.radek.apodpocket.BuildConfig;
 import com.jakewharton.disklrucache.DiskLruCache;
 
@@ -17,19 +17,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-
-
-public class DiskLruImageCache implements ImageLoader.ImageCache {
+/**
+ * Created by Radek on 29/09/15.
+ */
+public class DiskLruImageCache {
 
     private DiskLruCache mDiskCache;
     private Bitmap.CompressFormat mCompressFormat = Bitmap.CompressFormat.JPEG;
-    private static int IO_BUFFER_SIZE = 8*1024;
     private int mCompressQuality = 70;
     private static final int APP_VERSION = 1;
     private static final int VALUE_COUNT = 1;
+    private static final String TAG = "DiskLruImageCache";
 
-    public DiskLruImageCache(Context context,String uniqueName, int diskCacheSize,
-                             Bitmap.CompressFormat compressFormat, int quality ) {
+    public DiskLruImageCache( Context context,String uniqueName, int diskCacheSize,
+                              Bitmap.CompressFormat compressFormat, int quality ) {
         try {
             final File diskCacheDir = getDiskCacheDir(context, uniqueName );
             mDiskCache = DiskLruCache.open( diskCacheDir, APP_VERSION, VALUE_COUNT, diskCacheSize );
@@ -40,11 +41,11 @@ public class DiskLruImageCache implements ImageLoader.ImageCache {
         }
     }
 
-    private boolean writeBitmapToFile(Bitmap bitmap, DiskLruCache.Editor editor )
+    private boolean writeBitmapToFile( Bitmap bitmap, DiskLruCache.Editor editor )
             throws IOException, FileNotFoundException {
         OutputStream out = null;
         try {
-            out = new BufferedOutputStream( editor.newOutputStream( 0 ), IO_BUFFER_SIZE );
+            out = new BufferedOutputStream( editor.newOutputStream( 0 ), Utils.IO_BUFFER_SIZE );
             return bitmap.compress( mCompressFormat, mCompressQuality, out );
         } finally {
             if ( out != null ) {
@@ -55,12 +56,18 @@ public class DiskLruImageCache implements ImageLoader.ImageCache {
 
     private File getDiskCacheDir(Context context, String uniqueName) {
 
-        final String cachePath = context.getCacheDir().getPath();
+        // Check if media is mounted or storage is built-in, if so, try and use external cache dir
+        // otherwise use internal cache dir
+        final String cachePath =
+                Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) ||
+                        !Utils.isExternalStorageRemovable() ?
+                        Utils.getExternalCacheDir(context).getPath() :
+                        context.getCacheDir().getPath();
+
         return new File(cachePath + File.separator + uniqueName);
     }
 
-    @Override
-    public void putBitmap( String key, Bitmap data ) {
+    public void put( String key, Bitmap data ) {
 
         DiskLruCache.Editor editor = null;
         try {
@@ -73,7 +80,7 @@ public class DiskLruImageCache implements ImageLoader.ImageCache {
                 mDiskCache.flush();
                 editor.commit();
                 if ( BuildConfig.DEBUG ) {
-                    Log.d( "cache_test_DISK_", "image put on disk cache " + key );
+                    Log.d("cache_test_DISK_", "image put on disk cache " + key);
                 }
             } else {
                 editor.abort();
@@ -83,7 +90,7 @@ public class DiskLruImageCache implements ImageLoader.ImageCache {
             }
         } catch (IOException e) {
             if ( BuildConfig.DEBUG ) {
-                Log.d("cache_test_DISK_", "ERROR on: image put on disk cache " + key);
+                Log.d( "cache_test_DISK_", "ERROR on: image put on disk cache " + key );
             }
             try {
                 if ( editor != null ) {
@@ -95,7 +102,6 @@ public class DiskLruImageCache implements ImageLoader.ImageCache {
 
     }
 
-    @Override
     public Bitmap getBitmap( String key ) {
 
         Bitmap bitmap = null;
@@ -109,7 +115,7 @@ public class DiskLruImageCache implements ImageLoader.ImageCache {
             final InputStream in = snapshot.getInputStream( 0 );
             if ( in != null ) {
                 final BufferedInputStream buffIn =
-                        new BufferedInputStream( in, IO_BUFFER_SIZE );
+                        new BufferedInputStream( in, Utils.IO_BUFFER_SIZE );
                 bitmap = BitmapFactory.decodeStream(buffIn);
             }
         } catch ( IOException e ) {
@@ -161,9 +167,5 @@ public class DiskLruImageCache implements ImageLoader.ImageCache {
     public File getCacheFolder() {
         return mDiskCache.getDirectory();
     }
-
-
-
-
 
 }
