@@ -3,6 +3,7 @@ package com.example.radek.apodpocket.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,12 @@ import android.widget.TextView;
 import com.andexert.library.RippleView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.example.radek.apodpocket.R;
 import com.example.radek.apodpocket.images.ImageCacheManager;
+import com.example.radek.apodpocket.images.ImageHelper;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.model.RequestManager;
 
@@ -34,9 +37,13 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
 
     private ArrayList<APOD> mDataset;
     private Context mContext;
+    private int itemHeight;
 
     public APODAdapter(Context context) {
         this.mContext = context;
+        DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
+        itemHeight = Math.round(240 * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+        ;
 
     }
 
@@ -78,36 +85,51 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
         if (mDataset != null) {
             viewHolder.mTitle.setText(mDataset.get(position).getTitle());
             viewHolder.mDate.setText(mDataset.get(position).getDate());
-           // viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), ImageCacheManager.getInstance().getImageLoader());
+            //viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), ImageCacheManager.getInstance().getImageLoader());
             Animation mFadeAnimation  = AnimationUtils.loadAnimation(mContext,R.anim.blink);
             int intMin = (int) (long) mFadeAnimation.getDuration() - 200;
             int intMax = (int) (long) mFadeAnimation.getDuration() + 200;
 
             int randNum = intMin + (int)(Math.random() * ((intMax - intMin) + 1));
             mFadeAnimation.setDuration(randNum);
-            viewHolder.mListLayout.startAnimation(mFadeAnimation);
+            //viewHolder.mListLayout.startAnimation(mFadeAnimation);
 
 
-            if(viewHolder.imageRequest!=null){
-                viewHolder.imageRequest.cancel();
+            if(viewHolder !=null){
+
+                viewHolder.mListLayout.startAnimation(mFadeAnimation);
+                //viewHolder.mImageContainer.cancelRequest();
+//                viewHolder.imageRequest.cancel();
             }
 
-            viewHolder.imageRequest = new ImageRequest(mDataset.get(position).getUrl(), new Response.Listener<Bitmap>() {
+//
+//
+            //viewHolder.imageRequest = new ImageRequest(mDataset.get(position).getUrl(), new Response.Listener<Bitmap>() {
+            ImageCacheManager.getInstance().getImageLoader().get(mDataset.get(position).getUrl(), new ImageLoader.ImageListener() {
+
+
                 @Override
-                public void onResponse(Bitmap bitmap) {
-                    if (bitmap != null) {
+                public void onErrorResponse(VolleyError error) {
 
-                        viewHolder.mElementImage.setImageBitmap(bitmap);
-                    }
                 }
-            }, 0, 0, null,
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError volleyError) {
-                        }
-                    });
-            RequestManager.getRequestQueue().add(viewHolder.imageRequest);
 
+                @Override
+                public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                    viewHolder.mImageContainer = response;
+
+
+                }
+            });
+            //RequestManager.getRequestQueue().add(viewHolder.imageRequest);
+
+            if (viewHolder == null){
+
+                mFadeAnimation.cancel();
+                mFadeAnimation.reset();
+            }
+            if(viewHolder.mImageContainer!=null){
+                viewHolder.mElementImage.setImageUrl(viewHolder.mImageContainer.getRequestUrl(), ImageCacheManager.getInstance().getImageLoader());
+            }
         }
     }
 
@@ -123,15 +145,15 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
         TextView mTitle;
         TextView mDate;
         RelativeLayout mListLayout;
-        ImageView mElementImage;
+        NetworkImageView mElementImage;
         RippleView mRippleView;
-        ImageRequest imageRequest;
+        ImageLoader.ImageContainer mImageContainer;
          ;
         public ViewHolder(View v, Context context) {
             super(v);
             mTitle = (TextView) v.findViewById(R.id.apod_element_title_tv);
             mDate = (TextView) v.findViewById(R.id.apod_element_date_tv);
-            mElementImage = (ImageView) v.findViewById(R.id.apod_element_iv);
+            mElementImage = (NetworkImageView) v.findViewById(R.id.apod_element_iv);
             mListLayout = (RelativeLayout) v.findViewById(R.id.apods_list_rl);
             mRippleView = (RippleView) v.findViewById(R.id.ripple_view);
 
