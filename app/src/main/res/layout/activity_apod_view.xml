@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
+        android:onClick="pressCloseButton"
         android:src="@android:drawable/ic_menu_close_clear_cancel"
         />
     </RelativeLayout>

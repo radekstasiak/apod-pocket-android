@@ -83,6 +83,12 @@ public class ApodView extends Activity implements SaveDataInterface {
         mTextView.setText(apodElement.getExplanation());
     }
 
+
+    public void pressCloseButton(final View view)
+    {
+            super.onBackPressed();
+
+    }
     public void showExplanation(final View view)
     {
         if (mRelativeLayout.getVisibility()==View.GONE){
