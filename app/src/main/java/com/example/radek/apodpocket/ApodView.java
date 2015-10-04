@@ -8,6 +8,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -93,8 +94,10 @@ public class ApodView extends Activity implements SaveDataInterface {
     {
         if (mRelativeLayout.getVisibility()==View.GONE){
             mRelativeLayout.setVisibility(View.VISIBLE);
+            mNetworkImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         } else{
             mRelativeLayout.setVisibility(View.GONE);
+            mNetworkImageView.setScaleType(ImageView.ScaleType.CENTER);
         }
 
     }

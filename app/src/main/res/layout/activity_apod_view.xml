@@ -7,8 +7,8 @@
     <com.android.volley.toolbox.NetworkImageView
         android:id="@+id/apod_view_apod_iv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="center"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         android:clickable="true"
         android:onClick="showExplanation"
