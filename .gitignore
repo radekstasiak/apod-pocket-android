@@ -3,7 +3,8 @@
 # built application files
 *.apk
 *.ap_
-
+# keystore
+*.jks
 # files for the dex VM
 *.dex
 
