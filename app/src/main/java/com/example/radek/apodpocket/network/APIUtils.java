@@ -1,7 +1,6 @@
 package com.example.radek.apodpocket.network;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -10,16 +9,12 @@ import com.android.volley.toolbox.StringRequest;
 import android.app.Activity;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+
 import com.example.radek.apodpocket.APODList;
+import com.example.radek.apodpocket.ApodView;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.model.HomeResponse;
-import com.example.radek.apodpocket.model.RequestManager;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -29,8 +24,8 @@ import java.util.Iterator;
 public class APIUtils {
 
     private String globalResponse;
-    private APODList mActivity;
-    public APIUtils(APODList act){
+    private Activity mActivity;
+    public APIUtils(Activity act){
 
         mActivity = act;
 
@@ -40,14 +35,6 @@ public class APIUtils {
     }
 
     public void openAPODrequest(){
-//        VolleyApplication.getInstance().getRequestQueue().addRequestFinishedListener(new RequestQueue.RequestFinishedListener<Object>() {
-//            @Override
-//            public void onRequestFinished(Request<Object> request) {
-//
-//
-//                Toast.makeText(mActivity, "KONIEC", Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
         getAPODS();
     }
@@ -70,7 +57,7 @@ public class APIUtils {
 
                             APOD apodItem = HomeResponse.fromJsonObject(response);
                             apodItem.setDate(pair.getKey().toString());
-                            mActivity.saveData(apodItem);
+                            ((APODList) mActivity).saveData(apodItem);
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -78,11 +65,34 @@ public class APIUtils {
                     Toast.makeText(mActivity, error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-            RequestManager.getRequestQueue().add(request);
+            VolleyApplication.getInstance().getRequestQueue().add(request);
 
 
             it.remove();
         }
+
+
+    }
+
+    public void getSingleAPOD(final String date){
+
+        String url=APODRequest.getSingleRequest(date);
+        StringRequest request = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        APOD apodItem = HomeResponse.fromJsonObject(response);
+                        apodItem.setDate(date);
+                        ((ApodView) mActivity).saveData(apodItem);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mActivity, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        VolleyApplication.getInstance().getRequestQueue().add(request);
 
 
     }

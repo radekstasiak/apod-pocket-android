@@ -14,10 +14,10 @@
     <!--android:textSize="12sp"-->
     <!--android:textColor="#F0000000"-->
     <!--android:text="APODS list:"/>-->
-    <android.support.v7.widget.RecyclerView
+    <com.example.radek.apodpocket.model.CustomRecyclerView
         android:id="@+id/apods_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+    </com.example.radek.apodpocket.model.CustomRecyclerView>
     </LinearLayout>
 </RelativeLayout>

@@ -40,4 +40,12 @@ public class APODRequest {
         return uriList;
 
     }
+
+    public static String getSingleRequest(String date) {
+
+        String uri = String.format(Constants.NASA_API_URL + Constants.NASA_API_APOD,
+                Constants.NASA_API_KEY,
+                date);
+        return uri;
+    }
 }

@@ -1,24 +1,29 @@
 package com.example.radek.apodpocket;
 
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
 
-import android.support.v7.widget.RecyclerView;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.example.radek.apodpocket.adapter.APODAdapter;
+import com.example.radek.apodpocket.interfaces.SaveDataInterface;
 import com.example.radek.apodpocket.model.APOD;
+import com.example.radek.apodpocket.model.CustomRecyclerView;
 import com.example.radek.apodpocket.network.APIUtils;
-import com.example.radek.apodpocket.network.APODRequest;
 
 
-public class APODList extends Activity {
+public class APODList extends Activity implements SaveDataInterface {
 
 
-    private RecyclerView mRecyclerView;
+    private CustomRecyclerView mRecyclerView;
     private APODAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private  APIUtils apiUtils;
@@ -39,16 +44,16 @@ public class APODList extends Activity {
 
     private void setAdapter() {
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.apods_rv);
+        mRecyclerView = (CustomRecyclerView) findViewById(R.id.apods_rv);
         mRecyclerView.setHasFixedSize(true);
-
+        mRecyclerView.setItemViewCacheSize(5);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new APODAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
-        //addItemTouchListener();
         setListener();
+        addItemTouchListener();
 
     }
 
@@ -68,7 +73,7 @@ public class APODList extends Activity {
 
 
                 if (loading) {
-                    if ((visibleItemCount + pastVisiblesItems) >= totalItemCount-5) {
+                    if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
                         apiUtils.openAPODrequest();
                     }
                 }
@@ -76,7 +81,69 @@ public class APODList extends Activity {
         });
     }
 
+    public void addItemTouchListener() {
+        final GestureDetector mGestureDetector = new GestureDetector(APODList.this, new GestureDetector.SimpleOnGestureListener() {
+
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+
+        });
+        mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+
+
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+
+                View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+
+                if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+
+                    //ProgressDialog pdia = MPSApp.getProgressDialog(ArticlesList.this);
+
+                    //pdia.setTitle(getResources().getString(R.string.pdia_loading));
+                    //pdia.setCancelable(false);
+
+
+                    Intent intent = new Intent(APODList.this, ApodView.class);
+                    APODAdapter.ViewHolder viewHolderElement = (APODAdapter.ViewHolder) recyclerView.getChildViewHolder(child);
+                    //categoriesArticlesPosition = new HashMap();
+                    //categoriesArticlesPosition.put("category_id", category_id);
+                    //categoriesArticlesPosition.put("article_id", viewHolderElement.getLayoutPosition());
+
+                    //new ShowProgressDialogTask().execute("");
+                    //Bundle bundle = new Bundle();
+                    //bundle.putSerializable(Constants.ARTICLE_ADAPTER, categoriesArticlesPosition);
+                    String date = viewHolderElement.mDate.getText().toString();
+                    try {
+                        //    Thread.sleep(5000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    //intent.putExtras(bundle);
+                    intent.putExtra("APOD_DATE", date);
+                    startActivity(intent);
+                    //endLogging();
+
+                    return true;
+
+                }
+
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+
+            }
+
+
+        });
+    }
+
     ;
+    @Override
     public void saveData(APOD apodElement){
 
         mAdapter.setData(apodElement);
