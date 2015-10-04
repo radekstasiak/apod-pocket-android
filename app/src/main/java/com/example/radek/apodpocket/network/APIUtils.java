@@ -6,10 +6,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
 
+import android.app.Activity;
 import android.widget.Toast;
 
 
 import com.example.radek.apodpocket.APODList;
+import com.example.radek.apodpocket.ApodView;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.model.HomeResponse;
 
@@ -22,8 +24,8 @@ import java.util.Iterator;
 public class APIUtils {
 
     private String globalResponse;
-    private APODList mActivity;
-    public APIUtils(APODList act){
+    private Activity mActivity;
+    public APIUtils(Activity act){
 
         mActivity = act;
 
@@ -55,7 +57,7 @@ public class APIUtils {
 
                             APOD apodItem = HomeResponse.fromJsonObject(response);
                             apodItem.setDate(pair.getKey().toString());
-                            mActivity.saveData(apodItem);
+                            ((APODList) mActivity).saveData(apodItem);
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -68,6 +70,29 @@ public class APIUtils {
 
             it.remove();
         }
+
+
+    }
+
+    public void getSingleAPOD(final String date){
+
+        String url=APODRequest.getSingleRequest(date);
+        StringRequest request = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        APOD apodItem = HomeResponse.fromJsonObject(response);
+                        apodItem.setDate(date);
+                        ((ApodView) mActivity).saveData(apodItem);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mActivity, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        VolleyApplication.getInstance().getRequestQueue().add(request);
 
 
     }
