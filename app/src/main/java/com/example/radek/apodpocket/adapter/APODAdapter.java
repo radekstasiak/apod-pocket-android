@@ -12,11 +12,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.andexert.library.RippleView;
+import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.Volley;
 import com.example.radek.apodpocket.R;
 
+import com.example.radek.apodpocket.images.LruBitmapCache;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.network.VolleyApplication;
 
@@ -32,10 +35,13 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
     private ArrayList<APOD> mDataset;
     private Context mContext;
     private ImageLoader mImageLoader;
-
+    private RequestQueue mRequestQueue;
     public APODAdapter(Context context) {
         this.mContext = context;
         DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
+         mRequestQueue= Volley.newRequestQueue(mContext);
+       // mImageLoader = new ImageLoader(mRequestQueue, new LruBitmapCache(
+         //           LruBitmapCache.getCacheSize(mContext)));
         mImageLoader = VolleyApplication.getInstance().getImageLoader();
 
 
@@ -45,6 +51,8 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
         if (this.mDataset == null) {
             this.mDataset = new ArrayList<APOD>();
         }
+        if(apodElement!=null){
+        if (!apodElement.getTitle().isEmpty() && apodElement.getMedia_type()!="video"){
         this.mDataset.add(apodElement);
         Collections.sort(mDataset, new Comparator<APOD>() {
 
@@ -62,7 +70,7 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
                 }
                 return obj2.compareTo(obj1);
             }
-        });
+        });}}
         notifyDataSetChanged();
     }
     @Override
@@ -79,7 +87,7 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
         if (mDataset != null) {
             viewHolder.mTitle.setText(mDataset.get(position).getTitle());
             viewHolder.mDate.setText(mDataset.get(position).getDate());
-            //viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), ImageCacheManager.getInstance().getImageLoader());
+            viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), mImageLoader);
             Animation mFadeAnimation  = AnimationUtils.loadAnimation(mContext,R.anim.blink);
             int intMin = (int) (long) mFadeAnimation.getDuration() - 200;
             int intMax = (int) (long) mFadeAnimation.getDuration() + 200;
@@ -92,7 +100,7 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
 
             }
 
-            viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), mImageLoader);
+            //viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), mImageLoader);
 
             if (viewHolder == null){
 
@@ -110,10 +118,14 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
         } else {
             return 0;
         }
+
+
     }
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView mTitle;
-        TextView mDate;
+       public TextView mDate;
         RelativeLayout mListLayout;
         NetworkImageView mElementImage;
         RippleView mRippleView;
@@ -128,5 +140,7 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
 
 
         }
+
+
     }
 }

@@ -3,14 +3,17 @@ package com.example.radek.apodpocket.network;
 import android.app.Application;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
+import android.util.DisplayMetrics;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.example.radek.apodpocket.app.Settings;
 import com.example.radek.apodpocket.images.DiskLruImageCache;
+import com.example.radek.apodpocket.images.LruBitmapCache;
 
 /**
  * Created by Radek on 16/09/15.
@@ -26,16 +29,8 @@ public class VolleyApplication extends Application {
         super.onCreate();
         sInstance=this;
         mRequestQueue  = Volley.newRequestQueue(this.getApplicationContext());
-        mImageLoader = new ImageLoader(this.mRequestQueue, new ImageLoader.ImageCache() {
-            //private final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(10);
-            private final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(10);
-            public void putBitmap(String url, Bitmap bitmap) {
-                mCache.put(url, bitmap);
-            }
-            public Bitmap getBitmap(String url) {
-                return mCache.get(url);
-            }
-        });
+        mImageLoader = new ImageLoader(mRequestQueue, new LruBitmapCache(
+                LruBitmapCache.getCacheSize(this.getApplicationContext())));
 
     }
 
