@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
@@ -74,6 +73,7 @@ public class APODList extends Activity implements SaveDataInterface {
 
                 if (loading) {
                     if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+
                         apiUtils.openAPODrequest();
                     }
                 }
@@ -106,7 +106,7 @@ public class APODList extends Activity implements SaveDataInterface {
                     //pdia.setCancelable(false);
 
 
-                    Intent intent = new Intent(APODList.this, ApodView.class);
+                    Intent intent = new Intent(APODList.this, ApodViewFragment.class);
                     APODAdapter.ViewHolder viewHolderElement = (APODAdapter.ViewHolder) recyclerView.getChildViewHolder(child);
                     //categoriesArticlesPosition = new HashMap();
                     //categoriesArticlesPosition.put("category_id", category_id);
@@ -123,7 +123,9 @@ public class APODList extends Activity implements SaveDataInterface {
                     }
                     //intent.putExtras(bundle);
                     intent.putExtra("APOD_DATE", date);
+
                     startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     //endLogging();
 
                     return true;

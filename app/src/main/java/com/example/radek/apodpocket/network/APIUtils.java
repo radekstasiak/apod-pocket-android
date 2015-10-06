@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 
 import com.example.radek.apodpocket.APODList;
-import com.example.radek.apodpocket.ApodView;
+import com.example.radek.apodpocket.ApodViewFragment;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.model.HomeResponse;
 
@@ -84,7 +84,7 @@ public class APIUtils {
 
                         APOD apodItem = HomeResponse.fromJsonObject(response);
                         apodItem.setDate(date);
-                        ((ApodView) mActivity).saveData(apodItem);
+                        ((ApodViewFragment) mActivity).saveData(apodItem);
                     }
                 }, new Response.ErrorListener() {
             @Override
