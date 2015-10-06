@@ -1,12 +1,9 @@
 package com.example.radek.apodpocket;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,13 +13,13 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.example.radek.apodpocket.interfaces.SaveDataInterface;
+import com.example.radek.apodpocket.interfaces.DataInterface;
 import com.example.radek.apodpocket.model.APOD;
-import com.example.radek.apodpocket.network.APIUtils;
-import com.example.radek.apodpocket.network.VolleyApplication;
+
+import java.io.IOException;
 
 
-public class ApodViewFragment extends Fragment implements SaveDataInterface {
+public class ApodViewFragment extends Fragment implements DataInterface {
     private NetworkImageView mNetworkImageView;
     private TextView mTextView;
     private APOD mApodElement;
@@ -57,10 +54,14 @@ public class ApodViewFragment extends Fragment implements SaveDataInterface {
         mTextView = (TextView) rootView.findViewById(R.id.apod_view_text_tv);
         mRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.apod_view_rl);
         mTextView.setMovementMethod(new ScrollingMovementMethod());
+
+        mTextView.setText(mApodId);
         return rootView;
     }
-    public static ApodViewFragment newInstance() {
+    public static ApodViewFragment newInstance(int position) {
         ApodViewFragment fragment = new ApodViewFragment();
+
+        fragment.mApodId = position;
         //fragment.mApodElement = apod;
         //fragment.mApodId = apodId;
 
@@ -86,8 +87,13 @@ public class ApodViewFragment extends Fragment implements SaveDataInterface {
 
     @Override
     public void saveData(APOD apodElement) {
-        this.mApodElement = apodElement;
-    setData();
+       // this.mApodElement = apodElement;
+    //setData();
+    }
+
+    @Override
+    public void readData() throws IOException {
+
     }
 
     private void setData() {

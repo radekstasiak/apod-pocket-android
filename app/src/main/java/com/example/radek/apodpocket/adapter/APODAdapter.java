@@ -47,30 +47,11 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
 
     }
 
-    public void setData(APOD apodElement) {
+    public void setData(ArrayList<APOD> apodsList) {
         if (this.mDataset == null) {
             this.mDataset = new ArrayList<APOD>();
         }
-        if(apodElement!=null){
-        if (!apodElement.getTitle().isEmpty() && apodElement.getMedia_type()!="video"){
-        this.mDataset.add(apodElement);
-        Collections.sort(mDataset, new Comparator<APOD>() {
-
-            public int compare(APOD apod1, APOD apod2) {
-                String obj1 = apod1.getDate();
-                String obj2 = apod2.getDate();
-                if (obj1 == obj2) {
-                    return 0;
-                }
-                if (obj1 == null) {
-                    return -1;
-                }
-                if (obj2 == null) {
-                    return 1;
-                }
-                return obj2.compareTo(obj1);
-            }
-        });}}
+        this.mDataset=apodsList;
         notifyDataSetChanged();
     }
     @Override

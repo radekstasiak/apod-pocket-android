@@ -11,9 +11,12 @@ import android.util.DisplayMetrics;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.example.radek.apodpocket.Constants;
 import com.example.radek.apodpocket.app.Settings;
 import com.example.radek.apodpocket.images.DiskLruImageCache;
 import com.example.radek.apodpocket.images.LruBitmapCache;
+
+import java.io.File;
 
 /**
  * Created by Radek on 16/09/15.
@@ -33,6 +36,8 @@ public class VolleyApplication extends Application {
                 LruBitmapCache.getCacheSize(this.getApplicationContext())));
 
     }
+
+
 
     public synchronized static VolleyApplication getInstance() {
 

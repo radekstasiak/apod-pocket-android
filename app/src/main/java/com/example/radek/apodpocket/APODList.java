@@ -13,17 +13,22 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.radek.apodpocket.adapter.APODAdapter;
-import com.example.radek.apodpocket.interfaces.SaveDataInterface;
+import com.example.radek.apodpocket.interfaces.DataInterface;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.model.CustomRecyclerView;
 import com.example.radek.apodpocket.network.APIUtils;
+import com.example.radek.apodpocket.utils.StorageMenagerHelper;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 
-public class APODList extends Activity implements SaveDataInterface {
+public class APODList extends Activity implements DataInterface {
 
 
     private CustomRecyclerView mRecyclerView;
     private APODAdapter mAdapter;
+    private ArrayList<APOD> apods = new ArrayList<APOD>();
     private RecyclerView.LayoutManager mLayoutManager;
     private  APIUtils apiUtils;
 
@@ -35,6 +40,11 @@ public class APODList extends Activity implements SaveDataInterface {
         apiUtils.openAPODrequest();
 
         initUI();
+        try {
+            readData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initUI(){
@@ -74,7 +84,7 @@ public class APODList extends Activity implements SaveDataInterface {
                 if (loading) {
                     if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
 
-                        apiUtils.openAPODrequest();
+                    //    apiUtils.openAPODrequest();
                     }
                 }
             }
@@ -148,7 +158,14 @@ public class APODList extends Activity implements SaveDataInterface {
     @Override
     public void saveData(APOD apodElement){
 
-        mAdapter.setData(apodElement);
+       // mAdapter.setData(apodElement);
+    }
+
+    @Override
+    public void readData() throws IOException {
+
+        apods = StorageMenagerHelper.readFromInternalStorage(this);
+        mAdapter.setData(apods);
     }
 
 

@@ -14,6 +14,7 @@ import com.example.radek.apodpocket.APODList;
 import com.example.radek.apodpocket.ApodViewFragment;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.model.HomeResponse;
+import com.example.radek.apodpocket.utils.StorageMenagerHelper;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -57,6 +58,8 @@ public class APIUtils {
 
                             APOD apodItem = HomeResponse.fromJsonObject(response);
                             apodItem.setDate(pair.getKey().toString());
+                            StorageMenagerHelper.saveToInternalStorage(mActivity, apodItem);
+
                             ((APODList) mActivity).saveData(apodItem);
                         }
                     }, new Response.ErrorListener() {
@@ -84,7 +87,7 @@ public class APIUtils {
 
                         APOD apodItem = HomeResponse.fromJsonObject(response);
                         apodItem.setDate(date);
-                        ((ApodViewFragment) mActivity).saveData(apodItem);
+                       // ((ApodViewFragment) mActivity).saveData(apodItem);
                     }
                 }, new Response.ErrorListener() {
             @Override
