@@ -33,10 +33,18 @@ public class ApodViewAdapter extends FragmentStatePagerAdapter {
     public ApodViewAdapter(FragmentManager fm, ArrayList<APOD> apodsList) {
         super(fm);
         // mContext = context;
-        mDataset = apodsList;
+        setData(apodsList);
+        //mDataset = apodsList;
 
     }
 
+    public void setData(ArrayList<APOD> apodsList){
+
+        if(apodsList!=null){
+            this.mDataset= apodsList;
+            notifyDataSetChanged();
+        }
+    }
     @Override
     public Fragment getItem(int position) {
         return new ApodViewFragment().newInstance(mDataset.get(position), position);

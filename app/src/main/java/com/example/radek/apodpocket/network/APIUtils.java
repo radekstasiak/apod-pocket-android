@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.radek.apodpocket.APODList;
 import com.example.radek.apodpocket.ApodViewFragment;
+import com.example.radek.apodpocket.interfaces.DataInterface;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.model.HomeResponse;
 import com.example.radek.apodpocket.utils.ArrayHelper;
@@ -72,7 +73,8 @@ public class APIUtils {
                              //   if(apodsList.size()==10) {
                                     //StorageMenagerHelper.saveToInternalStorage(mActivity,apodsList);
                                 StorageMenagerHelper.saveToInternalStorage(mActivity,apodItem);
-                                            ((APODList) mActivity).readData();
+                                          //  ((APODList) mActivity).readData();
+                                ((DataInterface) mActivity).readData();
                                // }
                             } catch (IOException e) {
 

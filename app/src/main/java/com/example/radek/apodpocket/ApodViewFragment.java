@@ -104,7 +104,8 @@ public class ApodViewFragment extends Fragment implements DataInterface {
 
         //mNetworkImageView.setImageUrl(mApodElement.getUrl(), mImageLoader);
         Picasso.with(getActivity()).load(mApodElement.getUrl()).into(mApodImageView);
-        mTextView.setText(mApodElement.getExplanation());
+        //mTextView.setText(mApodElement.getExplanation());
+        mTextView.setText(mApodElement.getDate());
         mCloseButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
