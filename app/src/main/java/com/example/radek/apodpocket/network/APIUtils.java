@@ -14,8 +14,11 @@ import com.example.radek.apodpocket.APODList;
 import com.example.radek.apodpocket.ApodViewFragment;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.model.HomeResponse;
+import com.example.radek.apodpocket.utils.ArrayHelper;
 import com.example.radek.apodpocket.utils.StorageMenagerHelper;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -26,10 +29,11 @@ public class APIUtils {
 
     private String globalResponse;
     private Activity mActivity;
+    private ArrayList<APOD> apodsList;
     public APIUtils(Activity act){
 
         mActivity = act;
-
+        apodsList = new ArrayList<APOD>();
     }
     public String getGlobalResponse(){
         return globalResponse;
@@ -58,9 +62,20 @@ public class APIUtils {
 
                             APOD apodItem = HomeResponse.fromJsonObject(response);
                             apodItem.setDate(pair.getKey().toString());
-                            StorageMenagerHelper.saveToInternalStorage(mActivity, apodItem);
+                            //StorageMenagerHelper.saveToInternalStorage(mActivity, apodItem);
 
-                            ((APODList) mActivity).saveData(apodItem);
+                            apodsList.add(apodItem);
+                            apodsList= ArrayHelper.sortList(apodsList,apodItem);
+
+
+                            try {
+                                if(apodsList.size()==10) {
+                                    StorageMenagerHelper.saveToInternalStorage(mActivity,apodsList);
+                                            ((APODList) mActivity).readData();
+                                }
+                            } catch (IOException e) {
+
+                            }
                         }
                     }, new Response.ErrorListener() {
                 @Override

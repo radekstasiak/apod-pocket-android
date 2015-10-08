@@ -11,7 +11,6 @@
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
         android:clickable="true"
-        android:onClick="showExplanation"
         />
     <RelativeLayout
         android:id="@+id/apod_view_rl"
@@ -37,7 +36,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:onClick="pressCloseButton"
         android:src="@android:drawable/ic_menu_close_clear_cancel"
         />
     </RelativeLayout>

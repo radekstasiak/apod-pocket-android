@@ -7,29 +7,64 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.example.radek.apodpocket.adapter.ApodViewAdapter;
+import com.example.radek.apodpocket.interfaces.DataInterface;
+import com.example.radek.apodpocket.model.APOD;
+import com.example.radek.apodpocket.utils.StorageMenagerHelper;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Radek on 05/10/15.
  */
-public class ApodViewActivity extends FragmentActivity {
+public class ApodViewActivity extends FragmentActivity implements DataInterface {
 
 
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
+    private int currentApodId;
+    private ArrayList<APOD> mApodsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apod_view);
 
-        // Instantiate a ViewPager and a PagerAdapter.
+        try {
+            readData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        initUI();
+
+
+    }
+
+    private void initUI() {
 
         mPager = (ViewPager) findViewById(R.id.apod_view_pager);
-        Bundle extras = getIntent().getExtras();
-        String date = extras.getString("APOD_DATE");
-        //String date = getIntent().getIntExtra("APOD_DATE", 0);
-        mPagerAdapter = new ApodViewAdapter(getSupportFragmentManager(),this, date);
+        setPager();
+
+    }
+
+    private void setPager() {
+
+        mPagerAdapter = new ApodViewAdapter(getSupportFragmentManager(), mApodsList);
         mPager.setAdapter(mPagerAdapter);
-        mPager.getCurrentItem();
+        mPager.setCurrentItem(currentApodId);
+    }
+
+    @Override
+    public void saveData(APOD apodElement) {
+
+    }
+
+    @Override
+    public void readData() throws IOException {
+
+        currentApodId = getIntent().getIntExtra("APOD_DATE", 0);
+        mApodsList = StorageMenagerHelper.readFromInternalStorage(this);
+
+
     }
 }

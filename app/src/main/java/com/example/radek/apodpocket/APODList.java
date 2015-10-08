@@ -40,11 +40,11 @@ public class APODList extends Activity implements DataInterface {
         apiUtils.openAPODrequest();
 
         initUI();
-        try {
-            readData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            readData();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private void initUI(){
@@ -84,7 +84,7 @@ public class APODList extends Activity implements DataInterface {
                 if (loading) {
                     if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
 
-                    //    apiUtils.openAPODrequest();
+                       //apiUtils.openAPODrequest();
                     }
                 }
             }
@@ -116,7 +116,7 @@ public class APODList extends Activity implements DataInterface {
                     //pdia.setCancelable(false);
 
 
-                    Intent intent = new Intent(APODList.this, ApodViewFragment.class);
+                    Intent intent = new Intent(APODList.this, ApodViewActivity.class);
                     APODAdapter.ViewHolder viewHolderElement = (APODAdapter.ViewHolder) recyclerView.getChildViewHolder(child);
                     //categoriesArticlesPosition = new HashMap();
                     //categoriesArticlesPosition.put("category_id", category_id);
@@ -125,17 +125,19 @@ public class APODList extends Activity implements DataInterface {
                     //new ShowProgressDialogTask().execute("");
                     //Bundle bundle = new Bundle();
                     //bundle.putSerializable(Constants.ARTICLE_ADAPTER, categoriesArticlesPosition);
-                    String date = viewHolderElement.mDate.getText().toString();
-                    try {
+//                    String date = viewHolderElement.mDate.getText().toString();
+
+//                    try {
                         //    Thread.sleep(5000);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
                     //intent.putExtras(bundle);
-                    intent.putExtra("APOD_DATE", date);
+
+                    intent.putExtra("APOD_DATE", viewHolderElement.getPosition());
 
                     startActivity(intent);
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                    // overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     //endLogging();
 
                     return true;

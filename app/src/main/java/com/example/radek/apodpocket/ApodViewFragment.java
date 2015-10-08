@@ -15,6 +15,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.example.radek.apodpocket.interfaces.DataInterface;
 import com.example.radek.apodpocket.model.APOD;
+import com.example.radek.apodpocket.network.VolleyApplication;
 
 import java.io.IOException;
 
@@ -26,6 +27,7 @@ public class ApodViewFragment extends Fragment implements DataInterface {
     private int mApodId;
     private ImageLoader mImageLoader;
     private RelativeLayout mRelativeLayout;
+    private ImageView mCloseButton;
 
     private static final String KEY_CONTENT = "ApodViewFragment:Content";
 
@@ -54,17 +56,16 @@ public class ApodViewFragment extends Fragment implements DataInterface {
         mTextView = (TextView) rootView.findViewById(R.id.apod_view_text_tv);
         mRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.apod_view_rl);
         mTextView.setMovementMethod(new ScrollingMovementMethod());
-
-        mTextView.setText(mApodId);
+        mCloseButton = (ImageView) rootView.findViewById(R.id.apod_view_close_iv);
+        setData();
         return rootView;
     }
-    public static ApodViewFragment newInstance(int position) {
+    public static ApodViewFragment newInstance(APOD apodElement, int position) {
         ApodViewFragment fragment = new ApodViewFragment();
 
         fragment.mApodId = position;
-        //fragment.mApodElement = apod;
-        //fragment.mApodId = apodId;
-
+        fragment.mApodElement = apodElement;
+        fragment.mImageLoader = VolleyApplication.getInstance().getImageLoader();
 
         return fragment;
     }
@@ -100,6 +101,23 @@ public class ApodViewFragment extends Fragment implements DataInterface {
 
         mNetworkImageView.setImageUrl(mApodElement.getUrl(), mImageLoader);
         mTextView.setText(mApodElement.getExplanation());
+        mCloseButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+
+            }
+        });
+
+        mNetworkImageView.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                showExplanation();
+
+            }
+        });
     }
 
 
@@ -108,7 +126,7 @@ public class ApodViewFragment extends Fragment implements DataInterface {
             //super.onBackPressed();
 
     }
-    public void showExplanation(final View view)
+    public void showExplanation()
     {
         if (mRelativeLayout.getVisibility()==View.GONE){
             mRelativeLayout.setVisibility(View.VISIBLE);

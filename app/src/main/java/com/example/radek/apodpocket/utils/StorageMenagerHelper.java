@@ -22,26 +22,27 @@ import java.util.Comparator;
  */
 public class StorageMenagerHelper {
 
-    public static void saveToInternalStorage(Context ctx, APOD apod) {
-        File dir = ctx.getFilesDir();
-        File file = new File(dir, Constants.STORAGE_FILENAME);
-        file.delete();
-        if(!ifStorageExists(ctx)){
-
-            try {
-                createStorage(ctx);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public static void saveToInternalStorage(Context ctx, ArrayList<APOD> apod) {
+//        File dir = ctx.getFilesDir();
+//        File file = new File(dir, Constants.STORAGE_FILENAME);
+//        file.delete();
+//        if(!ifStorageExists(ctx)){
+//
+//            try {
+//                createStorage(ctx);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         if (apod != null) {
             try {
-                ArrayList<APOD> data = sortList(readFromInternalStorage(ctx), apod);
-                data.add(apod);
-                FileOutputStream fos = ctx.openFileOutput(Constants.STORAGE_FILENAME, ctx.MODE_PRIVATE);
+               // ArrayList<APOD> data = sortList(readFromInternalStorage(ctx), apod);
+                //ArrayList<APOD> data = readFromInternalStorage(ctx);
+               // data.add(apod);
+                FileOutputStream fos = ctx.openFileOutput(Constants.STORAGE_FILENAME, ctx.MODE_APPEND);
                 ObjectOutputStream of = new ObjectOutputStream(fos);
-                of.writeObject(data);
+                of.writeObject(apod);
                 of.flush();
                 of.close();
                 fos.close();
@@ -73,7 +74,7 @@ public class StorageMenagerHelper {
 
     private static void createStorage(Context ctx) throws IOException {
         ArrayList<APOD> emptyList = new ArrayList<APOD>();
-        APOD emptyApod = new APOD("","","");
+        APOD emptyApod = new APOD("AAA","BBB","CCC");
         emptyList.add(emptyApod);
         FileOutputStream fos = ctx.openFileOutput(Constants.STORAGE_FILENAME, ctx.MODE_PRIVATE);
         ObjectOutputStream of = new ObjectOutputStream(fos);
@@ -93,30 +94,5 @@ public class StorageMenagerHelper {
         return true;
     }
 
-    private static ArrayList<APOD> sortList(ArrayList<APOD> apodsList, APOD newApod){
 
-        ArrayList<APOD> sortedList = apodsList;
-        if(newApod!=null){
-            if (!newApod.getTitle().isEmpty() && newApod.getMedia_type()!="video"){
-                sortedList.add(newApod);
-                Collections.sort(sortedList, new Comparator<APOD>() {
-
-                    public int compare(APOD apod1, APOD apod2) {
-                        String obj1 = apod1.getDate();
-                        String obj2 = apod2.getDate();
-                        if (obj1 == obj2) {
-                            return 0;
-                        }
-                        if (obj1 == null) {
-                            return -1;
-                        }
-                        if (obj2 == null) {
-                            return 1;
-                        }
-                        return obj2.compareTo(obj1);
-                    }
-                });}}
-
-        return sortedList;
-    }
 }
