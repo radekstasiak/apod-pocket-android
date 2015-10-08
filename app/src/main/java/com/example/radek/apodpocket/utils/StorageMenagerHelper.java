@@ -22,7 +22,7 @@ import java.util.Comparator;
  */
 public class StorageMenagerHelper {
 
-    public static void saveToInternalStorage(Context ctx, ArrayList<APOD> apod) {
+    public static void saveToInternalStorage(Context ctx, APOD apod) {
 //        File dir = ctx.getFilesDir();
 //        File file = new File(dir, Constants.STORAGE_FILENAME);
 //        file.delete();
@@ -40,9 +40,12 @@ public class StorageMenagerHelper {
                // ArrayList<APOD> data = sortList(readFromInternalStorage(ctx), apod);
                 //ArrayList<APOD> data = readFromInternalStorage(ctx);
                // data.add(apod);
-                FileOutputStream fos = ctx.openFileOutput(Constants.STORAGE_FILENAME, ctx.MODE_APPEND);
+                ArrayList<APOD> data = readFromInternalStorage(ctx);
+                data.add(apod);
+                data= ArrayHelper.sortList(data,apod);
+                FileOutputStream fos = ctx.openFileOutput(Constants.STORAGE_FILENAME, ctx.MODE_PRIVATE);
                 ObjectOutputStream of = new ObjectOutputStream(fos);
-                of.writeObject(apod);
+                of.writeObject(data);
                 of.flush();
                 of.close();
                 fos.close();
@@ -63,7 +66,7 @@ public class StorageMenagerHelper {
             toReturn = (ArrayList<APOD>) oi.readObject();
             oi.close();
         } catch (FileNotFoundException e) {
-            return null;
+            return new ArrayList<APOD>();
         } catch (IOException e) {
             Log.e("InternalStorage", e.getMessage());
         } catch (ClassNotFoundException e) {

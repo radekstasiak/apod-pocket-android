@@ -64,15 +64,16 @@ public class APIUtils {
                             apodItem.setDate(pair.getKey().toString());
                             //StorageMenagerHelper.saveToInternalStorage(mActivity, apodItem);
 
-                            apodsList.add(apodItem);
-                            apodsList= ArrayHelper.sortList(apodsList,apodItem);
+                            //apodsList.add(apodItem);
+                            //apodsList= ArrayHelper.sortList(apodsList,apodItem);
 
 
                             try {
-                                if(apodsList.size()==10) {
-                                    StorageMenagerHelper.saveToInternalStorage(mActivity,apodsList);
+                             //   if(apodsList.size()==10) {
+                                    //StorageMenagerHelper.saveToInternalStorage(mActivity,apodsList);
+                                StorageMenagerHelper.saveToInternalStorage(mActivity,apodItem);
                                             ((APODList) mActivity).readData();
-                                }
+                               // }
                             } catch (IOException e) {
 
                             }

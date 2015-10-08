@@ -84,7 +84,7 @@ public class APODList extends Activity implements DataInterface {
                 if (loading) {
                     if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
 
-                       //apiUtils.openAPODrequest();
+                       apiUtils.openAPODrequest();
                     }
                 }
             }
