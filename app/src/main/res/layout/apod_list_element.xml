@@ -12,7 +12,7 @@
             rv_rippleDuration="1"
             rv_zoom="true"
             rv_centered="true">
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:id="@+id/apod_element_iv"
         android:layout_width="match_parent"
         android:layout_height="240dp"

@@ -4,7 +4,7 @@
     android:background="@android:color/black"
     tools:context="com.example.radek.apodpocket.ApodViewFragment">
 
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:id="@+id/apod_view_apod_iv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

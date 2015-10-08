@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import com.example.radek.apodpocket.R;
 import com.example.radek.apodpocket.images.LruBitmapCache;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.network.VolleyApplication;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,7 +70,9 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
         if (mDataset != null) {
             viewHolder.mTitle.setText(mDataset.get(position).getTitle());
             viewHolder.mDate.setText(mDataset.get(position).getDate());
-            viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), mImageLoader);
+            //viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), mImageLoader);
+
+            Picasso.with(mContext).load(mDataset.get(position).getUrl()).into(viewHolder.mElementImage);
             Animation mFadeAnimation  = AnimationUtils.loadAnimation(mContext,R.anim.blink);
             int intMin = (int) (long) mFadeAnimation.getDuration() - 200;
             int intMax = (int) (long) mFadeAnimation.getDuration() + 200;
@@ -108,14 +112,16 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
         TextView mTitle;
        public TextView mDate;
         RelativeLayout mListLayout;
-        NetworkImageView mElementImage;
+        //NetworkImageView mElementImage;
+        ImageView mElementImage;
         RippleView mRippleView;
          ;
         public ViewHolder(View v, Context context) {
             super(v);
             mTitle = (TextView) v.findViewById(R.id.apod_element_title_tv);
             mDate = (TextView) v.findViewById(R.id.apod_element_date_tv);
-            mElementImage = (NetworkImageView) v.findViewById(R.id.apod_element_iv);
+            //mElementImage = (NetworkImageView) v.findViewById(R.id.apod_element_iv);
+            mElementImage = (ImageView) v.findViewById(R.id.apod_element_iv);
             mListLayout = (RelativeLayout) v.findViewById(R.id.apods_list_rl);
             mRippleView = (RippleView) v.findViewById(R.id.ripple_view);
 
