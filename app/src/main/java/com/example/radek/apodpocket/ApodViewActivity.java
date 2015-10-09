@@ -57,6 +57,7 @@ public class ApodViewActivity extends FragmentActivity implements DataInterface 
         mPagerAdapter = new ApodViewAdapter(getSupportFragmentManager(), mApodsList);
         mPager.setAdapter(mPagerAdapter);
         mPager.setCurrentItem(currentApodId);
+
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -66,7 +67,7 @@ public class ApodViewActivity extends FragmentActivity implements DataInterface 
 
             @Override
             public void onPageSelected(int position) {
-                if(position == mApodsList.size()-3) {
+                if (position == mApodsList.size() - 3) {
 
                     apiUtils.getAPODS();
                     Toast.makeText(getApplicationContext(), String.valueOf(position), Toast.LENGTH_SHORT).show();
@@ -84,6 +85,16 @@ public class ApodViewActivity extends FragmentActivity implements DataInterface 
     public void saveData(APOD apodElement) {
 
     }
+
+    @Override
+    public void onBackPressed(){
+
+        Intent intent = new Intent();
+        intent.putExtra("last_viewed_page",mPager.getCurrentItem());
+        setResult(RESULT_OK, intent);
+        super.onBackPressed();
+    }
+
 
     @Override
     public void readData() throws IOException {

@@ -30,34 +30,22 @@ public class APODList extends Activity implements DataInterface {
     private APODAdapter mAdapter;
     private ArrayList<APOD> apods = new ArrayList<APOD>();
     private RecyclerView.LayoutManager mLayoutManager;
-    private  APIUtils apiUtils;
+    private APIUtils apiUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pictures_list);
-        apiUtils=new APIUtils(this);
+        apiUtils = new APIUtils(this);
         apiUtils.openAPODrequest();
 
         initUI();
-//        try {
-//            readData();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+
     }
 
-    @Override
-    protected void onResume(){
-        super.onResume();
-        try {
-            readData();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    private void initUI(){
+
+    private void initUI() {
         setAdapter();
     }
 
@@ -94,7 +82,7 @@ public class APODList extends Activity implements DataInterface {
                 if (loading) {
                     if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
 
-                      // apiUtils.openAPODrequest();
+                        // apiUtils.openAPODrequest();
                     }
                 }
             }
@@ -138,7 +126,7 @@ public class APODList extends Activity implements DataInterface {
 //                    String date = viewHolderElement.mDate.getText().toString();
 
 //                    try {
-                        //    Thread.sleep(5000);
+                    //    Thread.sleep(5000);
 //                    } catch (Exception e) {
 //                        e.printStackTrace();
 //                    }
@@ -146,7 +134,8 @@ public class APODList extends Activity implements DataInterface {
 
                     intent.putExtra("APOD_DATE", viewHolderElement.getPosition());
 
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
+                    //startActivity(intent);
                     // overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     //endLogging();
 
@@ -167,10 +156,11 @@ public class APODList extends Activity implements DataInterface {
     }
 
     ;
-    @Override
-    public void saveData(APOD apodElement){
 
-       // mAdapter.setData(apodElement);
+    @Override
+    public void saveData(APOD apodElement) {
+
+        // mAdapter.setData(apodElement);
     }
 
     @Override
@@ -201,5 +191,21 @@ public class APODList extends Activity implements DataInterface {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                int currentPosition = data.getIntExtra("last_viewed_page", 0);
+                try {
+                    readData();
+                    mLayoutManager.scrollToPosition(currentPosition);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
     }
 }
