@@ -47,6 +47,16 @@ public class APODList extends Activity implements DataInterface {
 //        }
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        try {
+            readData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initUI(){
         setAdapter();
     }
@@ -84,7 +94,7 @@ public class APODList extends Activity implements DataInterface {
                 if (loading) {
                     if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
 
-                       apiUtils.openAPODrequest();
+                      // apiUtils.openAPODrequest();
                     }
                 }
             }
