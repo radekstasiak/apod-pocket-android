@@ -11,10 +11,15 @@ import android.widget.Toast;
 
 
 import com.example.radek.apodpocket.APODList;
-import com.example.radek.apodpocket.ApodView;
+import com.example.radek.apodpocket.ApodViewFragment;
+import com.example.radek.apodpocket.interfaces.DataInterface;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.model.HomeResponse;
+import com.example.radek.apodpocket.utils.ArrayHelper;
+import com.example.radek.apodpocket.utils.StorageMenagerHelper;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -25,10 +30,11 @@ public class APIUtils {
 
     private String globalResponse;
     private Activity mActivity;
+    private ArrayList<APOD> apodsList;
     public APIUtils(Activity act){
 
         mActivity = act;
-
+        apodsList = new ArrayList<APOD>();
     }
     public String getGlobalResponse(){
         return globalResponse;
@@ -57,7 +63,22 @@ public class APIUtils {
 
                             APOD apodItem = HomeResponse.fromJsonObject(response);
                             apodItem.setDate(pair.getKey().toString());
-                            ((APODList) mActivity).saveData(apodItem);
+                            //StorageMenagerHelper.saveToInternalStorage(mActivity, apodItem);
+
+                            //apodsList.add(apodItem);
+                            //apodsList= ArrayHelper.sortList(apodsList,apodItem);
+
+
+                            try {
+                             //   if(apodsList.size()==10) {
+                                    //StorageMenagerHelper.saveToInternalStorage(mActivity,apodsList);
+                                StorageMenagerHelper.saveToInternalStorage(mActivity,apodItem);
+                                          //  ((APODList) mActivity).readData();
+                                ((DataInterface) mActivity).readData();
+                               // }
+                            } catch (IOException e) {
+
+                            }
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -84,7 +105,7 @@ public class APIUtils {
 
                         APOD apodItem = HomeResponse.fromJsonObject(response);
                         apodItem.setDate(date);
-                        ((ApodView) mActivity).saveData(apodItem);
+                       // ((ApodViewFragment) mActivity).saveData(apodItem);
                     }
                 }, new Response.ErrorListener() {
             @Override

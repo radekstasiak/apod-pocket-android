@@ -31,6 +31,18 @@ public class Settings {
         return sInstance;
     }
 
+    public void setLastViewedPagePosition(String lastPage) {
+
+        mPreferences.edit().putString("lastViewedPage", lastPage).commit();
+
+    }
+
+    public String getLastViewedPagePosition() {
+
+        return mPreferences.getString("latestDate", "");
+
+    }
+
     public void setLatestDate(String latestDate) {
 
         mPreferences.edit().putString("latestDate", latestDate).commit();

@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ApodView"
+            android:name=".ApodViewActivity"
             android:screenOrientation="landscape"
             android:label="@string/title_activity_apod_view" >
         </activity>

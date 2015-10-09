@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
@@ -14,31 +13,39 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.radek.apodpocket.adapter.APODAdapter;
-import com.example.radek.apodpocket.interfaces.SaveDataInterface;
+import com.example.radek.apodpocket.interfaces.DataInterface;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.model.CustomRecyclerView;
 import com.example.radek.apodpocket.network.APIUtils;
+import com.example.radek.apodpocket.utils.StorageMenagerHelper;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 
-public class APODList extends Activity implements SaveDataInterface {
+public class APODList extends Activity implements DataInterface {
 
 
     private CustomRecyclerView mRecyclerView;
     private APODAdapter mAdapter;
+    private ArrayList<APOD> apods = new ArrayList<APOD>();
     private RecyclerView.LayoutManager mLayoutManager;
-    private  APIUtils apiUtils;
+    private APIUtils apiUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pictures_list);
-        apiUtils=new APIUtils(this);
+        apiUtils = new APIUtils(this);
         apiUtils.openAPODrequest();
 
         initUI();
+
     }
 
-    private void initUI(){
+
+
+    private void initUI() {
         setAdapter();
     }
 
@@ -74,7 +81,8 @@ public class APODList extends Activity implements SaveDataInterface {
 
                 if (loading) {
                     if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                        apiUtils.openAPODrequest();
+
+                        // apiUtils.openAPODrequest();
                     }
                 }
             }
@@ -106,7 +114,7 @@ public class APODList extends Activity implements SaveDataInterface {
                     //pdia.setCancelable(false);
 
 
-                    Intent intent = new Intent(APODList.this, ApodView.class);
+                    Intent intent = new Intent(APODList.this, ApodViewActivity.class);
                     APODAdapter.ViewHolder viewHolderElement = (APODAdapter.ViewHolder) recyclerView.getChildViewHolder(child);
                     //categoriesArticlesPosition = new HashMap();
                     //categoriesArticlesPosition.put("category_id", category_id);
@@ -115,15 +123,20 @@ public class APODList extends Activity implements SaveDataInterface {
                     //new ShowProgressDialogTask().execute("");
                     //Bundle bundle = new Bundle();
                     //bundle.putSerializable(Constants.ARTICLE_ADAPTER, categoriesArticlesPosition);
-                    String date = viewHolderElement.mDate.getText().toString();
-                    try {
-                        //    Thread.sleep(5000);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+//                    String date = viewHolderElement.mDate.getText().toString();
+
+//                    try {
+                    //    Thread.sleep(5000);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
                     //intent.putExtras(bundle);
-                    intent.putExtra("APOD_DATE", date);
-                    startActivity(intent);
+
+                    intent.putExtra("APOD_DATE", viewHolderElement.getPosition());
+
+                    startActivityForResult(intent, 1);
+                    //startActivity(intent);
+                    // overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     //endLogging();
 
                     return true;
@@ -143,10 +156,18 @@ public class APODList extends Activity implements SaveDataInterface {
     }
 
     ;
-    @Override
-    public void saveData(APOD apodElement){
 
-        mAdapter.setData(apodElement);
+    @Override
+    public void saveData(APOD apodElement) {
+
+        // mAdapter.setData(apodElement);
+    }
+
+    @Override
+    public void readData() throws IOException {
+
+        apods = StorageMenagerHelper.readFromInternalStorage(this);
+        mAdapter.setData(apods);
     }
 
 
@@ -170,5 +191,21 @@ public class APODList extends Activity implements SaveDataInterface {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                int currentPosition = data.getIntExtra("last_viewed_page", 0);
+                try {
+                    readData();
+                    mLayoutManager.scrollToPosition(currentPosition);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
     }
 }
