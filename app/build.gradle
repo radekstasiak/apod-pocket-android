@@ -30,4 +30,5 @@ dependencies {
     compile files('libs/picasso-2.5.2.jar')
 
     compile project(':volley')
+    compile project(':aphidFlipViewLibrary')
 }
