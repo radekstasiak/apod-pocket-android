@@ -68,9 +68,7 @@ public class ApodViewActivity extends FragmentActivity implements DataInterface 
             @Override
             public void onPageSelected(int position) {
                 if (position == mApodsList.size() - 3) {
-
                     apiUtils.getAPODS();
-                    Toast.makeText(getApplicationContext(), String.valueOf(position), Toast.LENGTH_SHORT).show();
                 }
             }
 
