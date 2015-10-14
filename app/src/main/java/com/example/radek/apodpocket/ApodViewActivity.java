@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Toast;
 
+import com.aphidmobile.flip.FlipViewController;
 import com.example.radek.apodpocket.adapter.ApodViewAdapter;
 import com.example.radek.apodpocket.interfaces.DataInterface;
 import com.example.radek.apodpocket.model.APOD;
