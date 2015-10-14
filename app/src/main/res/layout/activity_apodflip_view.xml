@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/black"
+
     >
     <LinearLayout
         android:id="@+id/apods_list_rl"
@@ -12,7 +14,6 @@
 
             <ImageView
                 android:id="@+id/apod_element_iv"
-                android:background="@android:color/black"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:scaleType="centerCrop"
@@ -25,7 +26,6 @@
 
         <LinearLayout
             android:orientation="vertical"
-            android:background="@android:color/black"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         <TextView
