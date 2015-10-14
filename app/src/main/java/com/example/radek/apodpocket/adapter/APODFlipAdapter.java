@@ -62,14 +62,8 @@ public class APODFlipAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View layout = convertView;
-        //ViewHolder viewHolder =null;
         if (convertView == null) {
             layout = inflater.inflate(R.layout.apod_list_element, null);
-//            viewHolder = new ViewHolder();
-//            viewHolder.mTitle = (TextView) convertView.findViewById(R.id.apod_element_title_tv);
-//            viewHolder.mDate = (TextView) convertView.findViewById(R.id.apod_element_date_tv);
-//            viewHolder.mElementImage = (ImageView) convertView.findViewById(R.id.apod_element_iv);
-//            viewHolder.mListLayout = (RelativeLayout) convertView.findViewById(R.id.apods_list_rl);
             AphidLog.d("created new view from adapter: %d", position);
         }
 
@@ -77,25 +71,15 @@ public class APODFlipAdapter extends BaseAdapter {
 
         UI
                 .<TextView>findViewById(layout, R.id.apod_element_title_tv)
-                .setText(AphidLog.format("%d. %s", position, apod.getTitle()));
+                .setText(apod.getTitle());
         UI
                 .<TextView>findViewById(layout, R.id.apod_element_date_tv)
-                .setText(AphidLog.format("%d. %s", position, apod.getDate()));
+                .setText( apod.getDate());
 
         Picasso.with(mContext).load(mDataset.get(position).getUrl()).into(UI.<ImageView>findViewById(layout,R.id.apod_element_iv));
-//        if(viewHolder != null) {
-//            viewHolder.mTitle.setText(apod.getTitle());
-//            viewHolder.mDate.setText(apod.getDate());
-//            Picasso.with(mContext).load(mDataset.get(position).getUrl()).into(viewHolder.mElementImage);
-//        }
+//
         return layout;
     }
 
-    private class ViewHolder {
-        TextView mTitle;
-        TextView mDate;
-        RelativeLayout mListLayout;
-        ImageView mElementImage;
 
-    }
 }
