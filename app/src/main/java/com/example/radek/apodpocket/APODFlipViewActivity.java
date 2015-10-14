@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.aphidmobile.flip.FlipViewController;
@@ -60,6 +61,9 @@ public class APODFlipViewActivity extends Activity implements DataInterface {
                 }
             }
         });
+
+        flipViewController.setOverFlipEnabled(false);
+
     }
 
     @Override
