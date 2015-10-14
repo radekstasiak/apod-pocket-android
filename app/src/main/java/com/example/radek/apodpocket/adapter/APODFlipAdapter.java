@@ -63,7 +63,7 @@ public class APODFlipAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View layout = convertView;
         if (convertView == null) {
-            layout = inflater.inflate(R.layout.apod_list_element, null);
+            layout = inflater.inflate(R.layout.activity_apodflip_view, null);
             AphidLog.d("created new view from adapter: %d", position);
         }
 
