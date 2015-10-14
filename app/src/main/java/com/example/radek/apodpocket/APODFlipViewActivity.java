@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import se.emilsjolander.flipview.FlipView;
+import se.emilsjolander.flipview.OverFlipMode;
 
 
 public class APODFlipViewActivity extends Activity implements DataInterface {
@@ -55,18 +56,29 @@ public class APODFlipViewActivity extends Activity implements DataInterface {
         apodAdapter = new APODFlipAdapter(this, R.layout.activity_apodflip_element);
         flipView.setAdapter(apodAdapter);
 
-        flipView.setOnFlipListener(new FlipView.OnFlipListener() {
+//        flipView.setOnFlipListener(new FlipView.OnFlipListener() {
+//            @Override
+//            public void onFlippedToPage(FlipView flipView, int position, long l) {
+//
+//                if(position == apods.size()-3){
+//                    Toast.makeText(flipView.getContext(), "Flipped to page " + position, Toast.LENGTH_SHORT).show();
+//
+//                    apiUtils.openAPODrequest();
+//                }
+//            }
+//        });
+
+        flipView.setOnOverFlipListener(new FlipView.OnOverFlipListener() {
             @Override
-            public void onFlippedToPage(FlipView flipView, int position, long l) {
-
-                if(position == apods.size()-3){
-                    Toast.makeText(flipView.getContext(), "Flipped to page " + position, Toast.LENGTH_SHORT).show();
-
+            public void onOverFlip(FlipView flipView, OverFlipMode overFlipMode, boolean b, float v, float v1) {
+                if(flipView.getCurrentPage()!=0) {
+                    Toast.makeText(flipView.getContext(), "Loading more", Toast.LENGTH_SHORT).show();
                     apiUtils.openAPODrequest();
                 }
+
+
             }
         });
-
 
 
     }
