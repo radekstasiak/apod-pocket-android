@@ -1,10 +1,13 @@
 package com.example.radek.apodpocket;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.aphidmobile.flip.FlipViewController;
 import com.example.radek.apodpocket.adapter.APODFlipAdapter;
@@ -17,14 +20,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class APODFlipViewActivity extends ActionBarActivity implements DataInterface {
+public class APODFlipViewActivity extends Activity implements DataInterface {
     private APODFlipAdapter apodAdapter;
     private FlipViewController flipViewController;
     private APIUtils apiUtils;
     private ArrayList<APOD> apods = new ArrayList<APOD>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         apiUtils = new APIUtils(this);
         apiUtils.openAPODrequest();
 
