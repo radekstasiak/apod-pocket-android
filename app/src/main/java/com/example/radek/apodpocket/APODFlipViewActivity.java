@@ -11,7 +11,6 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
-import com.aphidmobile.flip.FlipViewController;
 import com.example.radek.apodpocket.adapter.APODFlipAdapter;
 import com.example.radek.apodpocket.interfaces.DataInterface;
 import com.example.radek.apodpocket.model.APOD;
@@ -21,10 +20,12 @@ import com.example.radek.apodpocket.utils.StorageMenagerHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import se.emilsjolander.flipview.FlipView;
+
 
 public class APODFlipViewActivity extends Activity implements DataInterface {
     private APODFlipAdapter apodAdapter;
-    private FlipViewController flipViewController;
+    private FlipView flipView;
     private APIUtils apiUtils;
     private ArrayList<APOD> apods = new ArrayList<APOD>();
     @Override
@@ -38,7 +39,7 @@ public class APODFlipViewActivity extends Activity implements DataInterface {
 
         initUI();
 
-        setContentView(flipViewController);
+        setContentView(R.layout.activity_apodflip_view);
     }
 
     private void initUI() {
@@ -48,34 +49,18 @@ public class APODFlipViewActivity extends Activity implements DataInterface {
 
     private void setFlipView() {
 
-        flipViewController = new FlipViewController(this);
-        apodAdapter = new APODFlipAdapter(this);
-        flipViewController.setAdapter(apodAdapter);
-        flipViewController.setOnViewFlipListener(new FlipViewController.ViewFlipListener() {
 
-            @Override
-            public void onViewFlipped(View view, int position) {
-
-                if (position==apods.size()-3){
-                    apiUtils.openAPODrequest();
-                }
-            }
-        });
-
-        flipViewController.setOverFlipEnabled(false);
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        flipViewController.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        flipViewController.onPause();
     }
 
     @Override
@@ -87,7 +72,7 @@ public class APODFlipViewActivity extends Activity implements DataInterface {
     public void readData() throws IOException {
 
         apods = StorageMenagerHelper.readFromInternalStorage(this);
-        apodAdapter.setData(apods);
+        //apodAdapter.setData(apods);
     }
 
 

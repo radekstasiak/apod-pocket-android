@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.aphidmobile.flip.FlipViewController;
 import com.example.radek.apodpocket.adapter.APODAdapter;
 import com.example.radek.apodpocket.interfaces.DataInterface;
 import com.example.radek.apodpocket.model.APOD;
@@ -40,7 +39,6 @@ public class APODList extends Activity implements DataInterface {
         apiUtils = new APIUtils(this);
         apiUtils.openAPODrequest();
 
-        FlipViewController flipView = new FlipViewController(this, FlipViewController.HORIZONTAL);
         //lipView.setAdapter(mAdapter);
         //flipView.setOnCli
         initUI();

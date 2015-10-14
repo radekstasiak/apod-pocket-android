@@ -9,8 +9,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.aphidmobile.utils.AphidLog;
-import com.aphidmobile.utils.UI;
 import com.example.radek.apodpocket.R;
 import com.example.radek.apodpocket.model.APOD;
 import com.squareup.picasso.Picasso;
@@ -61,24 +59,8 @@ public class APODFlipAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View layout = convertView;
-        if (convertView == null) {
-            layout = inflater.inflate(R.layout.activity_apodflip_view, null);
-            AphidLog.d("created new view from adapter: %d", position);
-        }
 
-        final  APOD apod = mDataset.get(position);
-
-        UI
-                .<TextView>findViewById(layout, R.id.apod_element_title_tv)
-                .setText(apod.getTitle());
-        UI
-                .<TextView>findViewById(layout, R.id.apod_element_date_tv)
-                .setText( apod.getDate());
-
-        Picasso.with(mContext).load(mDataset.get(position).getUrl()).into(UI.<ImageView>findViewById(layout,R.id.apod_element_iv));
-//
-        return layout;
+        return null;
     }
 
 
