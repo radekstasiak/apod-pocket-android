@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.aphidmobile.flip.FlipViewController;
 import com.example.radek.apodpocket.adapter.APODFlipAdapter;
@@ -54,6 +55,9 @@ public class APODFlipViewActivity extends Activity implements DataInterface {
             @Override
             public void onViewFlipped(View view, int position) {
 
+                if (position==apods.size()-3){
+                    apiUtils.openAPODrequest();
+                }
             }
         });
     }
