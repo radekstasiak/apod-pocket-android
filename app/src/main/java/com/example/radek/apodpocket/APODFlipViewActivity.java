@@ -28,18 +28,19 @@ public class APODFlipViewActivity extends Activity implements DataInterface {
     private FlipView flipView;
     private APIUtils apiUtils;
     private ArrayList<APOD> apods = new ArrayList<APOD>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_apodflip_view);
         apiUtils = new APIUtils(this);
         apiUtils.openAPODrequest();
 
         initUI();
 
-        setContentView(R.layout.activity_apodflip_view);
     }
 
     private void initUI() {
@@ -48,6 +49,23 @@ public class APODFlipViewActivity extends Activity implements DataInterface {
     }
 
     private void setFlipView() {
+
+
+        flipView = (FlipView) findViewById(R.id.flip_view);
+        apodAdapter = new APODFlipAdapter(this, R.layout.activity_apodflip_element);
+        flipView.setAdapter(apodAdapter);
+
+        flipView.setOnFlipListener(new FlipView.OnFlipListener() {
+            @Override
+            public void onFlippedToPage(FlipView flipView, int position, long l) {
+
+                if(position == apods.size()-3){
+                    Toast.makeText(flipView.getContext(), "Flipped to page " + position, Toast.LENGTH_SHORT).show();
+
+                    apiUtils.openAPODrequest();
+                }
+            }
+        });
 
 
 
@@ -72,29 +90,8 @@ public class APODFlipViewActivity extends Activity implements DataInterface {
     public void readData() throws IOException {
 
         apods = StorageMenagerHelper.readFromInternalStorage(this);
-        //apodAdapter.setData(apods);
+        apodAdapter.setData(apods);
     }
 
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_apodflip_view, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 }
