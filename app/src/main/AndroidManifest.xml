@@ -16,7 +16,11 @@
         tools:replace="android:icon" >
         <activity
             android:name=".APODList"
-            android:label="@string/app_name" >
+            android:label="APODList" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ApodViewActivity"
