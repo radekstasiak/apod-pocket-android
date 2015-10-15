@@ -74,7 +74,12 @@ public class APODFlipAdapter extends ArrayAdapter<APOD> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         if(viewHolder!=null) {
-            Picasso.with(mContext).load(mDataset.get(position).getUrl()).into(viewHolder.mImageView);
+            if(mDataset.get(position).getMedia_type().equals("video")){
+                Picasso.with(mContext).load(R.drawable.videoplaceholder).into(viewHolder.mImageView);
+            }else{
+                Picasso.with(mContext).load(mDataset.get(position).getUrl()).into(viewHolder.mImageView);
+            }
+
             viewHolder.mTitle.setText(mDataset.get(position).getTitle());
             viewHolder.mDate.setText(mDataset.get(position).getDate());
             viewHolder.mExplanation.setText(mDataset.get(position).getExplanation());
@@ -83,7 +88,6 @@ public class APODFlipAdapter extends ArrayAdapter<APOD> {
         viewHolder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "Loading more", Toast.LENGTH_SHORT).show();
                 mActivity.seeDetails(position);
             }
         });
