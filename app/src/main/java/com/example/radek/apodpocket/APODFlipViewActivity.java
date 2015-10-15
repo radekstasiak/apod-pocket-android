@@ -1,6 +1,7 @@
 package com.example.radek.apodpocket;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -53,25 +54,13 @@ public class APODFlipViewActivity extends Activity implements DataInterface {
 
 
         flipView = (FlipView) findViewById(R.id.flip_view);
-        apodAdapter = new APODFlipAdapter(this, R.layout.activity_apodflip_element);
+        apodAdapter = new APODFlipAdapter(this, R.layout.activity_apodflip_element,this);
         flipView.setAdapter(apodAdapter);
-
-//        flipView.setOnFlipListener(new FlipView.OnFlipListener() {
-//            @Override
-//            public void onFlippedToPage(FlipView flipView, int position, long l) {
-//
-//                if(position == apods.size()-3){
-//                    Toast.makeText(flipView.getContext(), "Flipped to page " + position, Toast.LENGTH_SHORT).show();
-//
-//                    apiUtils.openAPODrequest();
-//                }
-//            }
-//        });
 
         flipView.setOnOverFlipListener(new FlipView.OnOverFlipListener() {
             @Override
             public void onOverFlip(FlipView flipView, OverFlipMode overFlipMode, boolean b, float v, float v1) {
-                if(flipView.getCurrentPage()!=0) {
+                if (flipView.getCurrentPage() != 0) {
                     Toast.makeText(flipView.getContext(), "Loading more", Toast.LENGTH_SHORT).show();
                     apiUtils.openAPODrequest();
                 }
@@ -79,6 +68,8 @@ public class APODFlipViewActivity extends Activity implements DataInterface {
 
             }
         });
+
+
 
 
     }
@@ -106,4 +97,28 @@ public class APODFlipViewActivity extends Activity implements DataInterface {
     }
 
 
+    public void seeDetails(int postion){
+
+        Intent intent = new Intent(APODFlipViewActivity.this, ApodViewActivity.class);
+
+        intent.putExtra("APOD_DATE", postion);
+
+        startActivityForResult(intent, 1);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                int currentPosition = data.getIntExtra("last_viewed_page", 0);
+                try {
+                    readData();
+                    flipView.flipTo(currentPosition);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
 }
