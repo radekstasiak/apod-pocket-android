@@ -39,6 +39,8 @@ public class APODList extends Activity implements DataInterface {
         apiUtils = new APIUtils(this);
         apiUtils.openAPODrequest();
 
+        //lipView.setAdapter(mAdapter);
+        //flipView.setOnCli
         initUI();
 
     }

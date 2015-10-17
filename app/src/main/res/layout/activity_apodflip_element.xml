@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+
+    >
+    <LinearLayout
+        android:id="@+id/apods_list_rl"
+        android:orientation="vertical"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/apod_element_iv"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:scaleType="centerCrop"
+            android:clickable="true"
+            android:adjustViewBounds="true"
+
+
+            />
+
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/apod_element_date_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:paddingTop="5dp"
+                android:paddingLeft="5dp"
+                android:gravity="left"
+
+                android:textColor="#FFFFFFFF"/>
+
+            <TextView
+                android:id="@+id/apod_element_title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="AAAA"
+                android:paddingBottom="5dp"
+                android:paddingRight="5dp"
+                android:gravity="right"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:textColor="#FFFFFFFF"/>
+
+            <TextView
+                android:id="@+id/apod_element_explanation_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="AAAA"
+                android:lines="3"
+                android:paddingBottom="5dp"
+                android:paddingRight="5dp"
+                android:gravity="right"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:textColor="#FFFFFFFF"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:background="@drawable/apod_shadow"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
