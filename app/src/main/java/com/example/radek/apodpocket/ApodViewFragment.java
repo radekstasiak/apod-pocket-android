@@ -1,11 +1,13 @@
 package com.example.radek.apodpocket;
 
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,6 +26,8 @@ public class ApodViewFragment extends Fragment implements DataInterface {
     private NetworkImageView mNetworkImageView;
     private ImageView mApodImageView;
     private TextView mTextView;
+    private CollapsingToolbarLayout mCtl;
+    private FrameLayout mContentFl;
     private APOD mApodElement;
     private int mApodId;
     private ImageLoader mImageLoader;
@@ -57,8 +61,8 @@ public class ApodViewFragment extends Fragment implements DataInterface {
         //mNetworkImageView = (NetworkImageView) rootView.findViewById(R.id.apod_view_apod_iv);
         mApodImageView = (ImageView) rootView.findViewById(R.id.apod_view_apod_iv);
         mTextView = (TextView) rootView.findViewById(R.id.apod_view_text_tv);
-
-
+        mCtl = (CollapsingToolbarLayout) rootView.findViewById(R.id.apod_fragment_ctl);
+        mContentFl = (FrameLayout) rootView.findViewById(R.id.fragment_apod_fl);
 
         setData();
         return rootView;
@@ -97,7 +101,6 @@ public class ApodViewFragment extends Fragment implements DataInterface {
 
     @Override
     public void readData() throws IOException {
-
     }
 
     private void setData() {
@@ -109,27 +112,16 @@ public class ApodViewFragment extends Fragment implements DataInterface {
             Picasso.with(getActivity()).load(mApodElement.getUrl()).into(mApodImageView);
         }
 
-        //mTextView.setText(mApodElement.getExplanation());
         mTextView.setText(mApodElement.getExplanation());
-//        mCloseButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                getActivity().onBackPressed();
-//
-//            }
-//        });
-        //to change with mNetworkImageView
-        mApodImageView.setOnClickListener(new View.OnClickListener(){
+        mCtl.setTitle(mApodElement.getTitle());
+        setHeroImageMaxHeight();
 
-            @Override
-            public void onClick(View v) {
-                showExplanation();
-
-            }
-        });
     }
 
+    private void setHeroImageMaxHeight(){
+        mContentFl.getMeasuredHeight();
+
+    }
 
     public void pressCloseButton(final View view)
     {
