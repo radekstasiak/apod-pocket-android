@@ -2,7 +2,6 @@ package com.example.radek.apodpocket;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,15 +50,16 @@ public class ApodViewFragment extends Fragment implements DataInterface {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+//        ViewGroup rootView = (ViewGroup) inflater.inflate(
+//                R.layout.fragment_apod_view, container, false);
         ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_apod_view, container, false);
-
+                R.layout.fragment_apod_material, container, false);
         //mNetworkImageView = (NetworkImageView) rootView.findViewById(R.id.apod_view_apod_iv);
         mApodImageView = (ImageView) rootView.findViewById(R.id.apod_view_apod_iv);
         mTextView = (TextView) rootView.findViewById(R.id.apod_view_text_tv);
-        mRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.apod_view_rl);
-        mTextView.setMovementMethod(new ScrollingMovementMethod());
-        mCloseButton = (ImageView) rootView.findViewById(R.id.apod_view_close_iv);
+
+
+
         setData();
         return rootView;
     }
@@ -111,14 +111,14 @@ public class ApodViewFragment extends Fragment implements DataInterface {
 
         //mTextView.setText(mApodElement.getExplanation());
         mTextView.setText(mApodElement.getExplanation());
-        mCloseButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-
-            }
-        });
+//        mCloseButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                getActivity().onBackPressed();
+//
+//            }
+//        });
         //to change with mNetworkImageView
         mApodImageView.setOnClickListener(new View.OnClickListener(){
 
@@ -138,13 +138,13 @@ public class ApodViewFragment extends Fragment implements DataInterface {
     }
     public void showExplanation()
     {
-        if (mRelativeLayout.getVisibility()==View.GONE){
-            mRelativeLayout.setVisibility(View.VISIBLE);
-            mApodImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        } else{
-            mRelativeLayout.setVisibility(View.GONE);
-            mApodImageView.setScaleType(ImageView.ScaleType.CENTER);
-        }
+//        if (mRelativeLayout.getVisibility()==View.GONE){
+//            mRelativeLayout.setVisibility(View.VISIBLE);
+//            mApodImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//        } else{
+//            mRelativeLayout.setVisibility(View.GONE);
+//            mApodImageView.setScaleType(ImageView.ScaleType.CENTER);
+//        }
 
     }
 }
