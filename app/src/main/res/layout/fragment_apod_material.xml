@@ -1,28 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright (C) 2015 Antonio Leiva
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~       http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  -->
-<RelativeLayout
+
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-
-    android:fitsSystemWindows="true"
-    >
-<android.support.design.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
@@ -38,7 +17,7 @@
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/apod_fragment_ctl"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:expandedTitleMarginStart="16dp"
 
@@ -69,9 +48,8 @@
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/scroll"
-        android:background="@android:color/holo_purple"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:clipToPadding="false"
 
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -86,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="0dp"
-
+                android:background="@android:color/holo_purple"
                 android:layout_gravity="center_vertical"
                 app:cardUseCompatPadding="true">
 
@@ -131,4 +109,3 @@
 </android.support.design.widget.CoordinatorLayout>
 
 
-</RelativeLayout>

@@ -1,12 +1,17 @@
 package com.example.radek.apodpocket;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -27,6 +32,9 @@ public class ApodViewFragment extends Fragment implements DataInterface {
     private ImageView mApodImageView;
     private TextView mTextView;
     private CollapsingToolbarLayout mCtl;
+    private Toolbar mToolbar;
+    private CardView mCardView;
+    private NestedScrollView mScrollView;
     private FrameLayout mContentFl;
     private APOD mApodElement;
     private int mApodId;
@@ -43,6 +51,7 @@ public class ApodViewFragment extends Fragment implements DataInterface {
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
             mApodElement = (APOD) savedInstanceState.getSerializable(KEY_CONTENT);
         }
+
     }
 
     @Override
@@ -63,7 +72,27 @@ public class ApodViewFragment extends Fragment implements DataInterface {
         mTextView = (TextView) rootView.findViewById(R.id.apod_view_text_tv);
         mCtl = (CollapsingToolbarLayout) rootView.findViewById(R.id.apod_fragment_ctl);
         mContentFl = (FrameLayout) rootView.findViewById(R.id.fragment_apod_fl);
+        mCardView = (CardView) rootView.findViewById(R.id.cardview);
+        mScrollView = (NestedScrollView) rootView.findViewById(R.id.scroll);
+        mToolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
 
+        ViewTreeObserver vto = mContentFl.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+
+            @Override
+            public void onGlobalLayout() {
+
+                mToolbar.setMinimumHeight(mContentFl.getHeight());
+                ViewTreeObserver obs = mContentFl.getViewTreeObserver();
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    obs.removeOnGlobalLayoutListener(this);
+                } else {
+                    obs.removeGlobalOnLayoutListener(this);
+                }
+            }
+
+        });
         setData();
         return rootView;
     }
@@ -120,6 +149,9 @@ public class ApodViewFragment extends Fragment implements DataInterface {
 
     private void setHeroImageMaxHeight(){
         mContentFl.getMeasuredHeight();
+        mCardView.getHeight();
+        mScrollView.getHeight();
+        mScrollView.getMeasuredHeight();
 
     }
 
