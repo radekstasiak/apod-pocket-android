@@ -22,6 +22,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.example.radek.apodpocket.interfaces.DataInterface;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.network.VolleyApplication;
+import com.example.radek.apodpocket.utils.ImageHelper;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -82,7 +83,8 @@ public class ApodViewFragment extends Fragment implements DataInterface {
             @Override
             public void onGlobalLayout() {
 
-                mToolbar.setMinimumHeight(mContentFl.getHeight());
+                setHeroImageMaxHeight();
+
                 ViewTreeObserver obs = mContentFl.getViewTreeObserver();
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -148,10 +150,13 @@ public class ApodViewFragment extends Fragment implements DataInterface {
     }
 
     private void setHeroImageMaxHeight(){
-        mContentFl.getMeasuredHeight();
-        mCardView.getHeight();
-        mScrollView.getHeight();
-        mScrollView.getMeasuredHeight();
+
+        int screenHeight = ImageHelper.getDisplayHeight(getActivity());
+        //mToolbar.setMinimumHeight(mContentFl.getHeight());
+//        mContentFl.getMeasuredHeight();
+//        mCardView.getHeight();
+//        mScrollView.getHeight();
+//        mScrollView.getMeasuredHeight();
 
     }
 
