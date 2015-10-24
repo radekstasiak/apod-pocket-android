@@ -95,14 +95,14 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab"-->
-        <!--app:layout_anchor="@id/cardview"-->
-        <!--app:layout_anchorGravity="top|right|end"-->
-        <!--android:src="@drawable/ic_rocket_em_blank"-->
-        <!--android:layout_margin="16dp"-->
-        <!--app:backgroundTint="@android:color/holo_purple"-->
-        <!--style="@style/FabStyle"/>-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        app:layout_anchor="@id/cardview"
+        app:layout_anchorGravity="top|right|end"
+        android:src="@drawable/ic_rocket_em_blank"
+        android:layout_margin="16dp"
+        app:backgroundTint="@android:color/holo_purple"
+        style="@style/FabStyle"/>
 
 
 
