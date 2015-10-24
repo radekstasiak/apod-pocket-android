@@ -145,13 +145,19 @@ public class ApodViewFragment extends Fragment implements DataInterface {
 
         mTextView.setText(mApodElement.getExplanation());
         mCtl.setTitle(mApodElement.getTitle());
-        setHeroImageMaxHeight();
+        //setHeroImageMaxHeight();
 
     }
 
     private void setHeroImageMaxHeight(){
 
         int screenHeight = ImageHelper.getDisplayHeight(getActivity());
+//int roznica=screenHeight - mContentFl.getHeight();
+      //  Toolbar.LayoutParams params = new Toolbar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,roznica);
+        //mToolbar.setLayoutParams(params);
+        mToolbar.getLayoutParams().height = screenHeight - mContentFl.getHeight();
+        mToolbar.requestLayout();
+        //mToolbar.setFitsSystemWindows(true);
         //mToolbar.setMinimumHeight(mContentFl.getHeight());
 //        mContentFl.getMeasuredHeight();
 //        mCardView.getHeight();

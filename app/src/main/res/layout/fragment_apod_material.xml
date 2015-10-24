@@ -27,11 +27,9 @@
 
             <ImageView
                 android:id="@+id/apod_view_apod_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:tint="@android:color/holo_purple"
-                android:tintMode="multiply"
-                android:scaleType="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
                 android:fitsSystemWindows="true"
                 app:layout_collapseMode="parallax"/>
 
