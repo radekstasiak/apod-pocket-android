@@ -23,18 +23,11 @@ import java.util.ArrayList;
 
 public class ApodViewAdapter extends FragmentStatePagerAdapter {
 
-    /// private ArrayList<View> views = new ArrayList<View>();
-
     private ArrayList<APOD> mDataset;
-
-    private Context mContext;
-    private APIUtils apiUtils;
 
     public ApodViewAdapter(FragmentManager fm, ArrayList<APOD> apodsList) {
         super(fm);
-        // mContext = context;
         setData(apodsList);
-        //mDataset = apodsList;
 
     }
 
@@ -47,7 +40,7 @@ public class ApodViewAdapter extends FragmentStatePagerAdapter {
     }
     @Override
     public Fragment getItem(int position) {
-        return new ApodViewFragment().newInstance(mDataset.get(position), position);
+        return new ApodViewFragment().newInstance(mDataset.get(position));
 
 
     }

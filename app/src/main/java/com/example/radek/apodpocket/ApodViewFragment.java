@@ -2,6 +2,7 @@ package com.example.radek.apodpocket;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
@@ -22,33 +23,30 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.example.radek.apodpocket.interfaces.DataInterface;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.network.VolleyApplication;
+import com.example.radek.apodpocket.utils.FontHelper;
 import com.example.radek.apodpocket.utils.ImageHelper;
 import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 
 
-public class ApodViewFragment extends Fragment implements DataInterface {
-    private NetworkImageView mNetworkImageView;
+public class ApodViewFragment extends Fragment implements DataInterface, AppBarLayout.OnOffsetChangedListener {
     private ImageView mApodImageView;
     private TextView mTextView;
-    private CollapsingToolbarLayout mCtl;
     private Toolbar mToolbar;
-    private CardView mCardView;
-    private NestedScrollView mScrollView;
+    private AppBarLayout mAppBarLayout;
+    private TextView mTitle;
     private FrameLayout mContentFl;
     private APOD mApodElement;
-    private int mApodId;
-    private ImageLoader mImageLoader;
-    private RelativeLayout mRelativeLayout;
-    private ImageView mCloseButton;
+
 
     private static final String KEY_CONTENT = "ApodViewFragment:Content";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
             mApodElement = (APOD) savedInstanceState.getSerializable(KEY_CONTENT);
         }
@@ -64,29 +62,32 @@ public class ApodViewFragment extends Fragment implements DataInterface {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        ViewGroup rootView = (ViewGroup) inflater.inflate(
-//                R.layout.fragment_apod_view, container, false);
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_apod_material, container, false);
-        //mNetworkImageView = (NetworkImageView) rootView.findViewById(R.id.apod_view_apod_iv);
+        initUI(rootView);
+        attachGlobalListener();
+        setData();
+        return rootView;
+    }
+
+    private void initUI(ViewGroup rootView) {
         mApodImageView = (ImageView) rootView.findViewById(R.id.apod_view_apod_iv);
         mTextView = (TextView) rootView.findViewById(R.id.apod_view_text_tv);
-        mCtl = (CollapsingToolbarLayout) rootView.findViewById(R.id.apod_fragment_ctl);
+        mTitle = (TextView) rootView.findViewById(R.id.apod_fragment_title_tv);
         mContentFl = (FrameLayout) rootView.findViewById(R.id.fragment_apod_fl);
-        mCardView = (CardView) rootView.findViewById(R.id.cardview);
-        mScrollView = (NestedScrollView) rootView.findViewById(R.id.scroll);
         mToolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        mAppBarLayout = (AppBarLayout) rootView.findViewById(R.id.app_bar_layout);
+        mAppBarLayout.addOnOffsetChangedListener(this);
+    }
 
+    private void attachGlobalListener() {
         ViewTreeObserver vto = mContentFl.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
             @Override
             public void onGlobalLayout() {
-
                 setHeroImageMaxHeight();
-
                 ViewTreeObserver obs = mContentFl.getViewTreeObserver();
-
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     obs.removeOnGlobalLayoutListener(this);
                 } else {
@@ -95,39 +96,26 @@ public class ApodViewFragment extends Fragment implements DataInterface {
             }
 
         });
-        setData();
-        return rootView;
     }
-    public static ApodViewFragment newInstance(APOD apodElement, int position) {
+
+    public static ApodViewFragment newInstance(APOD apodElement) {
         ApodViewFragment fragment = new ApodViewFragment();
-
-        fragment.mApodId = position;
         fragment.mApodElement = apodElement;
-        fragment.mImageLoader = VolleyApplication.getInstance().getImageLoader();
-
         return fragment;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
 
     @Override
     public void saveData(APOD apodElement) {
-       // this.mApodElement = apodElement;
-    //setData();
     }
 
     @Override
@@ -135,51 +123,37 @@ public class ApodViewFragment extends Fragment implements DataInterface {
     }
 
     private void setData() {
-
-        //mNetworkImageView.setImageUrl(mApodElement.getUrl(), mImageLoader);
         if(mApodElement.getMedia_type().equals("video")){
             Picasso.with(getActivity()).load(R.drawable.videoplaceholder).into(mApodImageView);
         }else{
             Picasso.with(getActivity()).load(mApodElement.getUrl()).into(mApodImageView);
         }
-
         mTextView.setText(mApodElement.getExplanation());
-        mCtl.setTitle(mApodElement.getTitle());
-        //setHeroImageMaxHeight();
-
+        mTitle.setText(mApodElement.getTitle());
     }
 
     private void setHeroImageMaxHeight(){
 
         int screenHeight = ImageHelper.getDisplayHeight(getActivity());
-//int roznica=screenHeight - mContentFl.getHeight();
-      //  Toolbar.LayoutParams params = new Toolbar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,roznica);
-        //mToolbar.setLayoutParams(params);
         mToolbar.getLayoutParams().height = screenHeight - mContentFl.getHeight();
         mToolbar.requestLayout();
-        //mToolbar.setFitsSystemWindows(true);
-        //mToolbar.setMinimumHeight(mContentFl.getHeight());
-//        mContentFl.getMeasuredHeight();
-//        mCardView.getHeight();
-//        mScrollView.getHeight();
-//        mScrollView.getMeasuredHeight();
 
     }
 
-    public void pressCloseButton(final View view)
-    {
-            //super.onBackPressed();
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int offset) {
+        float minimalTextSize = getActivity().getResources().getDimensionPixelSize(R.dimen.apod_view_title_scrolling_text_size);
+        float maximumTextSize = getActivity().getResources().getDimensionPixelSize(R.dimen.apod_view_title_default_text_size);
+        float absolut_offset = Math.abs(offset);
+        float text_size_difference = maximumTextSize - minimalTextSize;
+        float scale = (absolut_offset) / (appBarLayout.getHeight() - absolut_offset);
+        if (offset < 0) {
+            float result = maximumTextSize - (scale * text_size_difference);
+            mTitle.setTextSize(FontHelper.pixelsToSp(getActivity(), result));
+        } else {
+            mTitle.setTextSize(FontHelper.pixelsToSp(getActivity(), maximumTextSize));
 
-    }
-    public void showExplanation()
-    {
-//        if (mRelativeLayout.getVisibility()==View.GONE){
-//            mRelativeLayout.setVisibility(View.VISIBLE);
-//            mApodImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//        } else{
-//            mRelativeLayout.setVisibility(View.GONE);
-//            mApodImageView.setScaleType(ImageView.ScaleType.CENTER);
-//        }
 
+        }
     }
 }

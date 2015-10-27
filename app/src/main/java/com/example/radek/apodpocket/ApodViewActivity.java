@@ -102,8 +102,6 @@ public class ApodViewActivity extends FragmentActivity implements DataInterface 
         if(mPagerAdapter !=null) {
             mPagerAdapter.setData(mApodsList);
         }
-       // mPagerAdapter
-        //mPagerAdapter
 
 
     }
