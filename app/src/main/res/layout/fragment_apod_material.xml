@@ -11,6 +11,7 @@
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:fitsSystemWindows="true">
 
@@ -20,13 +21,8 @@
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:expandedTitleMarginStart="16dp"
-
             android:fitsSystemWindows="true">
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
             <ImageView
                 android:id="@+id/apod_view_apod_iv"
                 android:layout_width="match_parent"
@@ -43,7 +39,7 @@
 
                 <TextView
                     android:id="@+id/apod_fragment_title_tv"
-                    android:layout_width="match_parent"
+                    android:layout_width="360dp"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/apod_view_title_default_text_size"
@@ -52,7 +48,12 @@
                     />
             </RelativeLayout>
 
-
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -109,7 +110,7 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
-        app:layout_anchor="@id/cardview"
+        app:layout_anchor="@id/scroll"
         app:layout_anchorGravity="top|right|end"
         android:src="@drawable/ic_rocket_em_blank"
         android:layout_margin="16dp"

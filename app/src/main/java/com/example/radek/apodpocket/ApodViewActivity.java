@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,7 +22,7 @@ import java.util.ArrayList;
 /**
  * Created by Radek on 05/10/15.
  */
-public class ApodViewActivity extends FragmentActivity implements DataInterface {
+public class ApodViewActivity extends AppCompatActivity implements DataInterface {
 
 
     private ViewPager mPager;
@@ -43,6 +45,15 @@ public class ApodViewActivity extends FragmentActivity implements DataInterface 
         initUI();
 
 
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initUI() {

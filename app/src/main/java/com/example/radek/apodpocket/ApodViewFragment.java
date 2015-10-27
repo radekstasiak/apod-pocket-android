@@ -8,6 +8,8 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -44,6 +46,8 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
     private APOD mApodElement;
     private RelativeLayout mRelativeLayout;
 
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
+
 
     private static final String KEY_CONTENT = "ApodViewFragment:Content";
 
@@ -70,6 +74,7 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
         initUI(rootView);
         attachGlobalListener();
         setData();
+
         return rootView;
     }
 
@@ -82,6 +87,18 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
         mToolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         mAppBarLayout = (AppBarLayout) rootView.findViewById(R.id.app_bar_layout);
         mAppBarLayout.addOnOffsetChangedListener(this);
+        mCollapsingToolbarLayout = (CollapsingToolbarLayout) rootView.findViewById(R.id.apod_fragment_ctl);
+//        ActionBar actionBar = ((ApodViewActivity) getActivity()).getSupportActionBar();
+
+//        ActionBar actionBar = getSupportActionBar();
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+        ((ApodViewActivity) getActivity()).setSupportActionBar(mToolbar);
+        ((ApodViewActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
     }
@@ -136,7 +153,6 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
         }
 
 
-
         new HeroImageSizeAsyncTask().execute();
         mTextView.setText(mApodElement.getExplanation());
         mTitle.setText(mApodElement.getTitle());
@@ -146,7 +162,7 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
 
         int screenHeight = ImageHelper.getDisplayHeight(getActivity());
         mToolbar.getLayoutParams().height = screenHeight - mContentFl.getHeight();
-        mToolbar.requestLayout();
+        //mToolbar.requestLayout();
 
     }
 
