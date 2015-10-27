@@ -78,6 +78,7 @@ public class ApodViewActivity extends AppCompatActivity implements DataInterface
 
             @Override
             public void onPageSelected(int position) {
+
                 if (position == mApodsList.size() - 3) {
                     apiUtils.getAPODS();
                 }

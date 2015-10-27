@@ -54,6 +54,8 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
             mApodElement = (APOD) savedInstanceState.getSerializable(KEY_CONTENT);
         }
@@ -97,8 +99,7 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
                 getActivity().onBackPressed();
             }
         });
-        ((ApodViewActivity) getActivity()).setSupportActionBar(mToolbar);
-        ((ApodViewActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
 
     }
@@ -156,6 +157,10 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
         new HeroImageSizeAsyncTask().execute();
         mTextView.setText(mApodElement.getExplanation());
         mTitle.setText(mApodElement.getTitle());
+
+        ((ApodViewActivity) getActivity()).setSupportActionBar(mToolbar);
+        ((ApodViewActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar.requestLayout();
     }
 
     private void setHeroImageMaxHeight(){
