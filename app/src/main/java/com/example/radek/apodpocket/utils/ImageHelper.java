@@ -1,6 +1,7 @@
 package com.example.radek.apodpocket.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.WindowManager;
@@ -8,6 +9,8 @@ import android.widget.ImageView;
 
 import com.example.radek.apodpocket.R;
 import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
 
 /**
  * This class was created by me, here and now.
@@ -25,6 +28,15 @@ public final class ImageHelper {
 
     }
 
+    public static int getImageHeight(Context mContext, String imageUrl){
+        Bitmap image = null;
+        try {
+            image = Picasso.with(mContext).load(imageUrl).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+       return image.getHeight();
+    }
     public static int getDisplayHeight(Context mContext){
         Display display = getDisplay(mContext);
         Point size = new Point();

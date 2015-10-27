@@ -1,5 +1,7 @@
 package com.example.radek.apodpocket;
 
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -40,6 +42,7 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
     private TextView mTitle;
     private FrameLayout mContentFl;
     private APOD mApodElement;
+    private RelativeLayout mRelativeLayout;
 
 
     private static final String KEY_CONTENT = "ApodViewFragment:Content";
@@ -74,10 +77,13 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
         mApodImageView = (ImageView) rootView.findViewById(R.id.apod_view_apod_iv);
         mTextView = (TextView) rootView.findViewById(R.id.apod_view_text_tv);
         mTitle = (TextView) rootView.findViewById(R.id.apod_fragment_title_tv);
+        mRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.apod_fragment_text_rl);
         mContentFl = (FrameLayout) rootView.findViewById(R.id.fragment_apod_fl);
         mToolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         mAppBarLayout = (AppBarLayout) rootView.findViewById(R.id.app_bar_layout);
         mAppBarLayout.addOnOffsetChangedListener(this);
+
+
     }
 
     private void attachGlobalListener() {
@@ -128,6 +134,10 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
         }else{
             Picasso.with(getActivity()).load(mApodElement.getUrl()).into(mApodImageView);
         }
+
+
+
+        new HeroImageSizeAsyncTask().execute();
         mTextView.setText(mApodElement.getExplanation());
         mTitle.setText(mApodElement.getTitle());
     }
@@ -138,6 +148,11 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
         mToolbar.getLayoutParams().height = screenHeight - mContentFl.getHeight();
         mToolbar.requestLayout();
 
+    }
+
+    private void setTitleTextPosition(Integer height){
+
+        mRelativeLayout.getLayoutParams().height =  height;
     }
 
     @Override
@@ -156,4 +171,21 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
 
         }
     }
+
+    private class HeroImageSizeAsyncTask extends AsyncTask<Integer, Integer, Integer>{
+
+        @Override
+        protected Integer doInBackground(Integer... params) {
+
+            return ImageHelper.getImageHeight(getActivity(),mApodElement.getUrl());
+        }
+
+        protected void onPostExecute(Integer result) {
+
+            setTitleTextPosition(result);
+
+        }
+        }
+
+
 }
