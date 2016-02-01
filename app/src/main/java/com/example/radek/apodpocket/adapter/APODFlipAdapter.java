@@ -5,11 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.radek.apodpocket.APODFlipViewActivity;
 import com.example.radek.apodpocket.R;
@@ -74,7 +71,7 @@ public class APODFlipAdapter extends ArrayAdapter<APOD> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         if(viewHolder!=null) {
-            if(mDataset.get(position).getMedia_type().equals("video")){
+            if(mDataset.get(position).getType().equals("video")){
                 Picasso.with(mContext).load(R.drawable.videoplaceholder).into(viewHolder.mImageView);
             }else{
                 Picasso.with(mContext).load(mDataset.get(position).getUrl()).into(viewHolder.mImageView);

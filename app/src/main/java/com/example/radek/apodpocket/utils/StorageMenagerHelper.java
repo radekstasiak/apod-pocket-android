@@ -22,27 +22,14 @@ import java.util.Comparator;
  */
 public class StorageMenagerHelper {
 
-    public static void saveToInternalStorage(Context ctx, APOD apod) {
-//        File dir = ctx.getFilesDir();
-//        File file = new File(dir, Constants.STORAGE_FILENAME);
-//        file.delete();
-//        if(!ifStorageExists(ctx)){
-//
-//            try {
-//                createStorage(ctx);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
-        if (apod != null) {
+    public static void saveToInternalStorage(Context ctx, APOD[] apods) {
+        if (apods != null) {
             try {
-               // ArrayList<APOD> data = sortList(readFromInternalStorage(ctx), apod);
-                //ArrayList<APOD> data = readFromInternalStorage(ctx);
-               // data.add(apod);
                 ArrayList<APOD> data = readFromInternalStorage(ctx);
-                data.add(apod);
-                data= ArrayHelper.sortList(data,apod);
+                for(APOD apod:apods){
+                    data.add(apod);
+                    data=ArrayHelper.sortList(data,apod);
+                }
                 FileOutputStream fos = ctx.openFileOutput(Constants.STORAGE_FILENAME, ctx.MODE_PRIVATE);
                 ObjectOutputStream of = new ObjectOutputStream(fos);
                 of.writeObject(data);

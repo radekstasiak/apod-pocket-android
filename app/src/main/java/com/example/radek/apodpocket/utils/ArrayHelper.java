@@ -16,7 +16,7 @@ public class ArrayHelper {
 
         ArrayList<APOD> sortedList = apodsList;
         if (newApod != null) {
-            if (!newApod.getTitle().isEmpty() && newApod.getMedia_type() != "video") {
+            if (!newApod.getTitle().isEmpty() && newApod.getType() != "video") {
                 //sortedList.add(newApod);
                 Collections.sort(sortedList, new Comparator<APOD>() {
 
