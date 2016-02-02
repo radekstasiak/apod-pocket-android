@@ -7,6 +7,7 @@ import com.android.volley.toolbox.StringRequest;
 
 
 import android.app.Activity;
+import android.util.Log;
 import android.widget.Toast;
 
 
@@ -27,7 +28,7 @@ import java.util.Iterator;
  * Created by Radek on 16/09/15.
  */
 public class APIUtils {
-
+    private final String TAG="APOD REQUEST";
     private String globalResponse;
     private Activity mActivity;
     private ArrayList<APOD> apodsList;
@@ -48,7 +49,7 @@ public class APIUtils {
         APODRequest apodRequest;
             String result=APODRequest.getRequest();
 
-
+            Log.d(TAG,result);
             StringRequest request = new StringRequest(Request.Method.GET, result,
                     new Response.Listener<String>() {
                         @Override
