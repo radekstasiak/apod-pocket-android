@@ -30,8 +30,6 @@ import java.io.IOException;
 public class ApodViewFragment extends Fragment implements DataInterface, AppBarLayout.OnOffsetChangedListener {
     private ImageView mApodImageView;
     private TextView mTextView;
-    private Toolbar mToolbar;
-    private AppBarLayout mAppBarLayout;
     private TextView mTitle;
     private LinearLayout mContentFl;
     private APOD mApodElement;
@@ -77,10 +75,10 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
         mTitle = (TextView) rootView.findViewById(R.id.apod_fragment_title_tv);
         mRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.apod_fragment_text_rl);
         mContentFl = (LinearLayout) rootView.findViewById(R.id.fragment_apod_fl);
-        mToolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        mAppBarLayout = (AppBarLayout) rootView.findViewById(R.id.app_bar_layout);
-        mAppBarLayout.addOnOffsetChangedListener(this);
-        mCollapsingToolbarLayout = (CollapsingToolbarLayout) rootView.findViewById(R.id.apod_fragment_ctl);
+        //mToolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        //mAppBarLayout = (AppBarLayout) rootView.findViewById(R.id.app_bar_layout);
+        //mAppBarLayout.addOnOffsetChangedListener(this);
+        //mCollapsingToolbarLayout = (CollapsingToolbarLayout) rootView.findViewById(R.id.apod_fragment_ctl);
 //        ActionBar actionBar = ((ApodViewActivity) getActivity()).getSupportActionBar();
 
 //        ActionBar actionBar = getSupportActionBar();
