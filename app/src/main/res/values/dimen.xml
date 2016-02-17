@@ -6,6 +6,16 @@
     <dimen name="apod_list_element_row_height">115dp</dimen>
     <dimen name="apod_list_element_row_margin">6dp</dimen>
     <dimen name="apod_list_element_description_margin">6dp</dimen>
+    <dimen name="apod_list_title_size">18sp</dimen>
+    <dimen name="apod_list_title_padding">5dp</dimen>
+    <dimen name="apod_list_date_size">15sp</dimen>
+
+    <!-- APOD VIEW FRAGMENT -->
+    <dimen name="apod_view_image_height">230dp</dimen>
+    <dimen name="apod_view_scroll_padding">10dp</dimen>
+    <dimen name="apod_view_text_margin">10dp</dimen>
+    <dimen name="apod_view_title_size">20sp</dimen>
+    <dimen name="apod_view_descirption_size">18sp</dimen>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="apod_view_title_default_text_size">25sp</dimen>

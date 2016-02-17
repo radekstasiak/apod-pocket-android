@@ -17,7 +17,7 @@
         <ImageView
             android:id="@+id/apod_view_apod_iv"
             android:layout_width="match_parent"
-            android:layout_height="230dp"
+            android:layout_height="@dimen/apod_view_image_height"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:fitsSystemWindows="true"
@@ -29,7 +29,7 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="10dp"
+        android:paddingTop="@dimen/apod_view_scroll_padding"
         android:clipToPadding="true">
         <LinearLayout
                     android:layout_width="match_parent"
@@ -39,21 +39,21 @@
                         android:id="@+id/apod_view_title_tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="20sp"
+                        android:textSize="@dimen/apod_view_title_size"
                         android:gravity="right"
                         android:textColor="@color/yellow"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="@dimen/apod_view_text_margin"
+                        android:layout_marginRight="@dimen/apod_view_text_margin"
                         />
 
                     <TextView
                         android:id="@+id/apod_view_text_tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
+                        android:layout_margin="@dimen/apod_view_text_margin"
                         android:gravity="center"
                         android:textColor="@color/brown"
-                        android:textSize="18sp"/>
+                        android:textSize="@dimen/apod_view_descirption_size"/>
                 </LinearLayout>
 
 

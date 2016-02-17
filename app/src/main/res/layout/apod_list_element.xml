@@ -34,9 +34,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:paddingBottom="5dp"
-                    android:paddingRight="5dp"
+                    android:textSize="@dimen/apod_list_title_size"
+                    android:paddingBottom="@dimen/apod_list_title_padding"
+                    android:paddingRight="@dimen/apod_list_title_padding"
                     android:gravity="center_vertical|right"
                     android:textColor="@color/brown"/>
 
@@ -45,7 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="15sp"
+                    android:textSize="@dimen/apod_list_date_size"
                     android:gravity="right"
                     android:textColor="@color/yellow"/>
 
