@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!--- APOD LIST ELEMENT -->
+    <dimen name="apod_list_element_row_height">115dp</dimen>
+    <dimen name="apod_list_element_row_margin">6dp</dimen>
+    <dimen name="apod_list_element_description_margin">6dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="apod_view_title_default_text_size">25sp</dimen>
+    <dimen name="apod_view_title_scrolling_text_size">15sp</dimen>
+</resources>

@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class APODList extends Activity implements DataInterface {
+public class APODList extends AppCompatActivity implements DataInterface {
 
 
     private CustomRecyclerView mRecyclerView;
@@ -36,6 +38,10 @@ public class APODList extends Activity implements DataInterface {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pictures_list);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setTitle(getResources().getString(R.string.app_name));
+        myToolbar.setTitleTextColor(getResources().getColor(R.color.brown));
+        setSupportActionBar(myToolbar);
         apiUtils = new APIUtils(this);
         apiUtils.openAPODrequest();
 
