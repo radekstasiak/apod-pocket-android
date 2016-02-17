@@ -17,35 +17,45 @@ import java.util.HashMap;
  */
 public class APODRequest {
 
-    public static HashMap<String,String> getRequests(){
+    public static String getRequest(){
+        String offset=VolleyApplication.getSettings().getOffset();
+        String uri=Constants.NASA_API_URL+Constants.NASA_API_APOD+"&limit="+Constants.RESULTS_LIMIT+"&offset="+offset;
+        int newOffset = Integer.valueOf(offset)+Integer.valueOf(Constants.RESULTS_LIMIT);
+        VolleyApplication.getSettings().setOffset(Integer.toString(newOffset));
 
-        HashMap<String,String> uriList= new HashMap<String,String>();
-
-        DateTime latestDate=VolleyApplication.getSettings().getLastUpdateDate();
-        for(int i=0; i < Constants.NASA_API_RESPONSE_NUMBERY;i++) {
-            //DateTime date = new DateTime().minusDays(i);
-            DateTime date = latestDate.minusDays(i);
-            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd");
-            String uri = String.format(Constants.NASA_API_URL + Constants.NASA_API_APOD,
-                    Constants.NASA_API_KEY,
-                    date.toString(fmt));
-
-            uriList.put(date.toString(fmt), uri);
-            if(i==Constants.NASA_API_RESPONSE_NUMBERY-1) {
-                VolleyApplication.getSettings().setLatestDate(date.minusDays(1).toString(fmt));
-            }
-        }
-
-
-        return uriList;
-
-    }
-
-    public static String getSingleRequest(String date) {
-
-        String uri = String.format(Constants.NASA_API_URL + Constants.NASA_API_APOD,
-                Constants.NASA_API_KEY,
-                date);
         return uri;
     }
+
+
+//    public static HashMap<String,String> getRequests(){
+//
+//        HashMap<String,String> uriList= new HashMap<String,String>();
+//
+//        DateTime latestDate=VolleyApplication.getSettings().getLastUpdateDate();
+//        for(int i=0; i < Constants.NASA_API_RESPONSE_NUMBERY;i++) {
+//            //DateTime date = new DateTime().minusDays(i);
+//            DateTime date = latestDate.minusDays(i);
+//            DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd");
+//            String uri = String.format(Constants.NASA_API_URL + Constants.NASA_API_APOD,
+//                    Constants.NASA_API_KEY,
+//                    date.toString(fmt));
+//
+//            uriList.put(date.toString(fmt), uri);
+//            if(i==Constants.NASA_API_RESPONSE_NUMBERY-1) {
+//                VolleyApplication.getSettings().setLatestDate(date.minusDays(1).toString(fmt));
+//            }
+//        }
+//
+//
+//        return uriList;
+//
+//    }
+
+//    public static String getSingleRequest(String date) {
+//
+//        String uri = String.format(Constants.NASA_API_URL + Constants.NASA_API_APOD,
+//                Constants.NASA_API_KEY,
+//                date);
+//        return uri;
+//    }
 }

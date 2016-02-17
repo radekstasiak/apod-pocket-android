@@ -2,44 +2,37 @@ package com.example.radek.apodpocket;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.method.ScrollingMovementMethod;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.example.radek.apodpocket.interfaces.DataInterface;
 import com.example.radek.apodpocket.model.APOD;
-import com.example.radek.apodpocket.network.VolleyApplication;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
 
 public class ApodViewFragment extends Fragment implements DataInterface {
-    private NetworkImageView mNetworkImageView;
     private ImageView mApodImageView;
     private TextView mTextView;
+    private TextView mTitleView;
     private APOD mApodElement;
-    private int mApodId;
-    private ImageLoader mImageLoader;
-    private RelativeLayout mRelativeLayout;
-    private ImageView mCloseButton;
 
     private static final String KEY_CONTENT = "ApodViewFragment:Content";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if ((savedInstanceState != null) && savedInstanceState.containsKey(KEY_CONTENT)) {
             mApodElement = (APOD) savedInstanceState.getSerializable(KEY_CONTENT);
         }
+
     }
 
     @Override
@@ -52,99 +45,63 @@ public class ApodViewFragment extends Fragment implements DataInterface {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_apod_view, container, false);
-
-        //mNetworkImageView = (NetworkImageView) rootView.findViewById(R.id.apod_view_apod_iv);
-        mApodImageView = (ImageView) rootView.findViewById(R.id.apod_view_apod_iv);
-        mTextView = (TextView) rootView.findViewById(R.id.apod_view_text_tv);
-        mRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.apod_view_rl);
-        mTextView.setMovementMethod(new ScrollingMovementMethod());
-        mCloseButton = (ImageView) rootView.findViewById(R.id.apod_view_close_iv);
+                R.layout.fragment_apod_material, container, false);
+        initUI(rootView);
         setData();
+
         return rootView;
     }
-    public static ApodViewFragment newInstance(APOD apodElement, int position) {
+
+    private void initUI(ViewGroup rootView) {
+        mApodImageView = (ImageView) rootView.findViewById(R.id.apod_view_apod_iv);
+        mTextView = (TextView) rootView.findViewById(R.id.apod_view_text_tv);
+        mTitleView = (TextView) rootView.findViewById(R.id.apod_view_title_tv);
+        Toolbar myToolbar = (Toolbar) rootView.findViewById(R.id.my_toolbar);
+        myToolbar.setTitle(mApodElement.getDate());
+        myToolbar.setTitleTextColor(getResources().getColor(R.color.yellow));
+        ((AppCompatActivity)getActivity()).setSupportActionBar(myToolbar);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(getActivity().getResources().getDrawable(R.drawable.custum_up_indicator));
+
+    }
+
+
+
+    public static ApodViewFragment newInstance(APOD apodElement) {
         ApodViewFragment fragment = new ApodViewFragment();
-
-        fragment.mApodId = position;
         fragment.mApodElement = apodElement;
-        fragment.mImageLoader = VolleyApplication.getInstance().getImageLoader();
-
         return fragment;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
 
     @Override
     public void saveData(APOD apodElement) {
-       // this.mApodElement = apodElement;
-    //setData();
     }
 
     @Override
     public void readData() throws IOException {
-
     }
 
     private void setData() {
-
-        //mNetworkImageView.setImageUrl(mApodElement.getUrl(), mImageLoader);
-        if(mApodElement.getMedia_type().equals("video")){
+        if(mApodElement.getType().equals("video")){
             Picasso.with(getActivity()).load(R.drawable.videoplaceholder).into(mApodImageView);
         }else{
             Picasso.with(getActivity()).load(mApodElement.getUrl()).into(mApodImageView);
         }
 
-        //mTextView.setText(mApodElement.getExplanation());
+
         mTextView.setText(mApodElement.getExplanation());
-        mCloseButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-
-            }
-        });
-        //to change with mNetworkImageView
-        mApodImageView.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                showExplanation();
-
-            }
-        });
-    }
-
-
-    public void pressCloseButton(final View view)
-    {
-            //super.onBackPressed();
+        mTitleView.setText(mApodElement.getTitle());
 
     }
-    public void showExplanation()
-    {
-        if (mRelativeLayout.getVisibility()==View.GONE){
-            mRelativeLayout.setVisibility(View.VISIBLE);
-            mApodImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        } else{
-            mRelativeLayout.setVisibility(View.GONE);
-            mApodImageView.setScaleType(ImageView.ScaleType.CENTER);
-        }
 
-    }
 }

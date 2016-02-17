@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class APODList extends Activity implements DataInterface {
+public class APODList extends AppCompatActivity implements DataInterface {
 
 
     private CustomRecyclerView mRecyclerView;
@@ -36,6 +38,10 @@ public class APODList extends Activity implements DataInterface {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pictures_list);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setTitle(getResources().getString(R.string.app_name));
+        myToolbar.setTitleTextColor(getResources().getColor(R.color.brown));
+        setSupportActionBar(myToolbar);
         apiUtils = new APIUtils(this);
         apiUtils.openAPODrequest();
 
@@ -109,37 +115,13 @@ public class APODList extends Activity implements DataInterface {
                 View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
 
                 if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
-
-                    //ProgressDialog pdia = MPSApp.getProgressDialog(ArticlesList.this);
-
-                    //pdia.setTitle(getResources().getString(R.string.pdia_loading));
-                    //pdia.setCancelable(false);
-
-
                     Intent intent = new Intent(APODList.this, ApodViewActivity.class);
                     APODAdapter.ViewHolder viewHolderElement = (APODAdapter.ViewHolder) recyclerView.getChildViewHolder(child);
-                    //categoriesArticlesPosition = new HashMap();
-                    //categoriesArticlesPosition.put("category_id", category_id);
-                    //categoriesArticlesPosition.put("article_id", viewHolderElement.getLayoutPosition());
 
-                    //new ShowProgressDialogTask().execute("");
-                    //Bundle bundle = new Bundle();
-                    //bundle.putSerializable(Constants.ARTICLE_ADAPTER, categoriesArticlesPosition);
-//                    String date = viewHolderElement.mDate.getText().toString();
-
-//                    try {
-                    //    Thread.sleep(5000);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-                    //intent.putExtras(bundle);
 
                     intent.putExtra("APOD_DATE", viewHolderElement.getPosition());
 
                     startActivityForResult(intent, 1);
-                    //startActivity(intent);
-                    // overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                    //endLogging();
 
                     return true;
 

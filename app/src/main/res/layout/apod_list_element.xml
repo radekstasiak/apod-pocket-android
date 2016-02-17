@@ -1,55 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@null">
     <RelativeLayout
         android:id="@+id/apods_list_rl"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.andexert.library.RippleView
-            android:id="@+id/ripple_view"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            rv_rippleDuration="1"
-            rv_zoom="true"
-            rv_centered="true">
-    <ImageView
-        android:id="@+id/apod_element_iv"
-        android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:scaleType="centerCrop"
-        android:adjustViewBounds="true"
+            android:layout_height="@dimen/apod_list_element_row_height"
+            android:layout_marginBottom="@dimen/apod_list_element_row_margin"
+            android:layout_marginTop="@dimen/apod_list_element_row_margin"
+            android:orientation="horizontal"
+            android:background="@color/turquise">
+            <ImageView
+                android:id="@+id/apod_element_iv"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/apod_list_element_description_margin"
+                android:layout_marginRight="@dimen/apod_list_element_description_margin"
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/apod_element_title_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/apod_list_title_size"
+                    android:paddingBottom="@dimen/apod_list_title_padding"
+                    android:paddingRight="@dimen/apod_list_title_padding"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/brown"/>
 
-        />
+                <TextView
+                    android:id="@+id/apod_element_date_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/apod_list_date_size"
+                    android:gravity="right"
+                    android:textColor="@color/yellow"/>
 
-    <TextView
-        android:id="@+id/apod_element_date_tv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="18sp"
-        android:paddingTop="5dp"
-        android:paddingLeft="5dp"
-        android:gravity="left"
+            </LinearLayout>
 
-        android:textColor="#FFFFFFFF"/>
-
-    <TextView
-        android:id="@+id/apod_element_title_tv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="18sp"
-        android:paddingBottom="5dp"
-        android:paddingRight="5dp"
-        android:gravity="right"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:textColor="#FFFFFFFF"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:background="@drawable/apod_shadow"/>
-        </com.andexert.library.RippleView>
-
+        </LinearLayout>
     </RelativeLayout>
 
 </RelativeLayout>

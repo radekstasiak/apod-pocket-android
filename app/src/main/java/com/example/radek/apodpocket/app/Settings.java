@@ -59,5 +59,19 @@ public class Settings {
         return date;
     }
 
+    public void setOffset(String offset){
+
+        mPreferences.edit().putString("offset",offset).commit();
+    }
+
+    public String getOffset(){
+        String offset =  mPreferences.getString("offset", "");
+
+        if(offset.isEmpty()){
+            offset="0";
+        }
+        return offset;
+    }
+
 
 }

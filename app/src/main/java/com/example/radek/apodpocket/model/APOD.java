@@ -8,17 +8,29 @@ import java.io.Serializable;
 public class APOD implements Serializable {
 
     private String url;
-    private String media_type;
+    private String hd_url;
+    private String copyright;
+    private String type;
     private String title;
     private String explanation;
     private String concepts;
     private String date;
 
-    public APOD(String url, String media_type, String explanation) {
+    public APOD(String url, String type, String explanation) {
         this.url = url;
-        this.media_type = media_type;
+        this.type = type;
         this.explanation = explanation;
     }
+
+
+    public String getHd_url() {
+        return hd_url;
+    }
+
+    public void setHd_url(String hd_url) {
+        this.hd_url = hd_url;
+    }
+
 
     public String getDate() {
         return date;
@@ -28,12 +40,12 @@ public class APOD implements Serializable {
         this.date = date;
     }
 
-    public String getMedia_type() {
-        return media_type;
+    public String getType() {
+        return type;
     }
 
-    public void setMedia_type(String media_type) {
-        this.media_type = media_type;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getExplanation() {

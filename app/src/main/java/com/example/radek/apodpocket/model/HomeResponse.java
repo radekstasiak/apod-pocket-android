@@ -12,12 +12,12 @@ import java.io.Serializable;
 
 public class HomeResponse implements Serializable {
 
-    //public APOD apod;
+    public APOD[] apods;
 
-    public static APOD fromJsonObject(String jsonObject) {
+    public static APOD[] fromJsonObject(String jsonObject) {
         Gson gson = new Gson();
 
-        return gson.fromJson(jsonObject, APOD.class);
+        return gson.fromJson(jsonObject, APOD[].class);
     }
 
 }
