@@ -61,6 +61,7 @@ public class ApodViewFragment extends Fragment implements DataInterface {
         myToolbar.setTitleTextColor(getResources().getColor(R.color.yellow));
         ((AppCompatActivity)getActivity()).setSupportActionBar(myToolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(getActivity().getResources().getDrawable(R.drawable.custum_up_indicator));
 
     }
 

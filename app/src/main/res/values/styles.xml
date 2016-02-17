@@ -1,13 +1,15 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme2" parent="Theme.AppCompat.Light.NoActionBar">
 
         <item name="colorPrimaryDark">@color/yellow</item>
         <item name="colorPrimary">@color/yellow</item>
         <item name="windowActionBar">false</item>
         <item name="windowActionBarOverlay">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:homeAsUpIndicator">@drawable/custum_up_indicator</item>
+
 
         <!-- Customize your theme here. -->
     </style>
