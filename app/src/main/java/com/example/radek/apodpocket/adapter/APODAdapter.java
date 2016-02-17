@@ -73,25 +73,25 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
             //viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), mImageLoader);
 
             Picasso.with(mContext).load(mDataset.get(position).getUrl()).into(viewHolder.mElementImage);
-            Animation mFadeAnimation  = AnimationUtils.loadAnimation(mContext,R.anim.blink);
-            int intMin = (int) (long) mFadeAnimation.getDuration() - 200;
-            int intMax = (int) (long) mFadeAnimation.getDuration() + 200;
+            //Animation mFadeAnimation  = AnimationUtils.loadAnimation(mContext,R.anim.blink);
+            //int intMin = (int) (long) mFadeAnimation.getDuration() - 200;
+            //int intMax = (int) (long) mFadeAnimation.getDuration() + 200;
 
-            int randNum = intMin + (int)(Math.random() * ((intMax - intMin) + 1));
-            mFadeAnimation.setDuration(randNum);
-            if(viewHolder !=null){
+            //int randNum = intMin + (int)(Math.random() * ((intMax - intMin) + 1));
+            //mFadeAnimation.setDuration(randNum);
+            //if(viewHolder !=null){
 
-                viewHolder.mListLayout.startAnimation(mFadeAnimation);
+            //    viewHolder.mListLayout.startAnimation(mFadeAnimation);
 
-            }
+//            }
 
             //viewHolder.mElementImage.setImageUrl(mDataset.get(position).getUrl(), mImageLoader);
 
-            if (viewHolder == null){
+  //          if (viewHolder == null){
 
-                mFadeAnimation.cancel();
-                mFadeAnimation.reset();
-            }
+    //            mFadeAnimation.cancel();
+      //          mFadeAnimation.reset();
+        //    }
 
         }
     }
@@ -123,7 +123,7 @@ public class APODAdapter extends RecyclerView.Adapter<APODAdapter.ViewHolder> {
             //mElementImage = (NetworkImageView) v.findViewById(R.id.apod_element_iv);
             mElementImage = (ImageView) v.findViewById(R.id.apod_element_iv);
             mListLayout = (RelativeLayout) v.findViewById(R.id.apods_list_rl);
-            mRippleView = (RippleView) v.findViewById(R.id.ripple_view);
+            //mRippleView = (RippleView) v.findViewById(R.id.ripple_view);
 
 
         }

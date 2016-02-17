@@ -72,9 +72,9 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
     private void initUI(ViewGroup rootView) {
         mApodImageView = (ImageView) rootView.findViewById(R.id.apod_view_apod_iv);
         mTextView = (TextView) rootView.findViewById(R.id.apod_view_text_tv);
-        mTitle = (TextView) rootView.findViewById(R.id.apod_fragment_title_tv);
-        mRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.apod_fragment_text_rl);
-        mContentFl = (LinearLayout) rootView.findViewById(R.id.fragment_apod_fl);
+        //mTitle = (TextView) rootView.findViewById(R.id.apod_fragment_title_tv);
+        //mRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.apod_fragment_text_rl);
+       // mContentFl = (LinearLayout) rootView.findViewById(R.id.fragment_apod_fl);
         //mToolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
         //mAppBarLayout = (AppBarLayout) rootView.findViewById(R.id.app_bar_layout);
         //mAppBarLayout.addOnOffsetChangedListener(this);
@@ -145,7 +145,7 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
 
         //new HeroImageSizeAsyncTask().execute();
         mTextView.setText(mApodElement.getExplanation());
-        mTitle.setText(mApodElement.getTitle());
+       // mTitle.setText(mApodElement.getTitle());
 
         //((ApodViewActivity) getActivity()).setSupportActionBar(mToolbar);
         //((ApodViewActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -174,9 +174,9 @@ public class ApodViewFragment extends Fragment implements DataInterface, AppBarL
         float scale = (absolut_offset) / (appBarLayout.getHeight() - absolut_offset);
         if (offset < 0) {
             float result = maximumTextSize - (scale * text_size_difference);
-            mTitle.setTextSize(FontHelper.pixelsToSp(getActivity(), result));
+            //mTitle.setTextSize(FontHelper.pixelsToSp(getActivity(), result));
         } else {
-            mTitle.setTextSize(FontHelper.pixelsToSp(getActivity(), maximumTextSize));
+            //mTitle.setTextSize(FontHelper.pixelsToSp(getActivity(), maximumTextSize));
 
 
         }
