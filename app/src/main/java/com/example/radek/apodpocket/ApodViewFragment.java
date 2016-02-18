@@ -1,5 +1,7 @@
 package com.example.radek.apodpocket;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.radek.apodpocket.images.ImageUtils;
 import com.example.radek.apodpocket.interfaces.DataInterface;
 import com.example.radek.apodpocket.model.APOD;
 import com.squareup.picasso.Picasso;
@@ -19,7 +22,9 @@ import java.io.IOException;
 
 
 public class ApodViewFragment extends Fragment implements DataInterface {
+    public static final int BACKGROUND_SHIFT = 200;
     private ImageView mApodImageView;
+    private ImageView blurredImageView;
     private TextView mTextView;
     private TextView mTitleView;
     private APOD mApodElement;
@@ -46,26 +51,49 @@ public class ApodViewFragment extends Fragment implements DataInterface {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_apod_material, container, false);
-        initUI(rootView);
+        try {
+            initUI(rootView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         setData();
 
         return rootView;
     }
 
-    private void initUI(ViewGroup rootView) {
+    private void initUI(ViewGroup rootView) throws IOException {
+        int screenHeight = ImageUtils.getScreenHeight(getActivity())
+                + BACKGROUND_SHIFT;
+        blurredImageView = (ImageView) rootView.findViewById(R.id.blured_image);
         mApodImageView = (ImageView) rootView.findViewById(R.id.apod_view_apod_iv);
-        mTextView = (TextView) rootView.findViewById(R.id.apod_view_text_tv);
-        mTitleView = (TextView) rootView.findViewById(R.id.apod_view_title_tv);
-        Toolbar myToolbar = (Toolbar) rootView.findViewById(R.id.my_toolbar);
-        myToolbar.setTitle(mApodElement.getDate());
-        myToolbar.setTitleTextColor(getResources().getColor(R.color.yellow));
-        ((AppCompatActivity)getActivity()).setSupportActionBar(myToolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(getActivity().getResources().getDrawable(R.drawable.custum_up_indicator));
+
+        setViewHeight(mApodImageView, screenHeight);
+        setViewHeight(blurredImageView, screenHeight);
+
+        loadBlurredImage();
 
     }
 
 
+    public void setViewHeight(View v, int height) {
+        ViewGroup.LayoutParams params = v.getLayoutParams();
+        params.height = height;
+        v.setLayoutParams(params);
+    }
+
+    private void loadBlurredImage() throws IOException {
+        Drawable backgroundImage = ImageUtils.drawableFromUrl(mApodElement.getUrl());
+            ImageUtils.getBlurredImage(getActivity(), backgroundImage,
+                    ImageUtils.getImageName(mApodElement.getDate()), 20,
+                    new ImageUtils.BlurEffectListener() {
+
+                        @Override
+                        public void onDone(Bitmap bitmap) {
+                            blurredImageView.setImageBitmap(bitmap);
+                        }
+                    });
+    }
 
     public static ApodViewFragment newInstance(APOD apodElement) {
         ApodViewFragment fragment = new ApodViewFragment();
@@ -99,8 +127,8 @@ public class ApodViewFragment extends Fragment implements DataInterface {
         }
 
 
-        mTextView.setText(mApodElement.getExplanation());
-        mTitleView.setText(mApodElement.getTitle());
+        //mTextView.setText(mApodElement.getExplanation());
+        //mTitleView.setText(mApodElement.getTitle());
 
     }
 
