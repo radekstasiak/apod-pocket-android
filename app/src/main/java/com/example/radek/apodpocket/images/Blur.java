@@ -1,4 +1,4 @@
-package com.example.radek.apodpocket.images;
+package com.npi.blureffect;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

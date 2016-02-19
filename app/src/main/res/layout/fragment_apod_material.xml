@@ -3,85 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ScrollView
-        android:id="@+id/bgScrollView"
+
+
+    <com.example.radek.apodpocket.utils.TopCenterImageView
+        android:id="@+id/apod_view_apod_iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.example.radek.apodpocket.utils.TopCenterImageView
+        android:id="@+id/blurred_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:overScrollMode="never"
-        android:scrollbars="none" >
-        <RelativeLayout
-            android:id="@+id/bg_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-            <ImageView
-                android:id="@+id/apod_view_apod_iv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop" />
-            <ImageView
-                android:id="@+id/blured_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:alpha="0.0"
-                android:scaleType="centerCrop" />
-            </RelativeLayout>
-    </ScrollView>
+        android:alpha="0"/>
 
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:cacheColorHint="@android:color/transparent"
-        android:divider="@null"
-        android:overScrollMode="never"
-        android:scrollbars="none" >
-    </ListView>
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:orientation="vertical">-->
-        <!--<TextView-->
-            <!--android:id="@+id/apod_view_title_tv"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textSize="@dimen/apod_view_title_size"-->
-            <!--android:gravity="right"-->
-            <!--android:textColor="@color/yellow"-->
-            <!--android:layout_marginLeft="@dimen/apod_view_text_margin"-->
-            <!--android:layout_marginRight="@dimen/apod_view_text_margin"-->
-            <!--/>-->
-    <!--<android.support.v4.widget.NestedScrollView-->
-        <!--android:id="@+id/scroll"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="@dimen/apod_view_image_height"-->
-
-        <!--android:paddingTop="@dimen/apod_view_scroll_padding"-->
-        <!--android:clipToPadding="true">-->
-        <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:orientation="vertical">-->
-
-
-                    <!--<TextView-->
-                        <!--android:id="@+id/apod_view_text_tv"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_margin="@dimen/apod_view_text_margin"-->
-                        <!--android:gravity="center"-->
-                        <!--android:textColor="@color/brown"-->
-                        <!--android:textSize="@dimen/apod_view_descirption_size"/>-->
-                <!--</LinearLayout>-->
-
-
-    <!--</android.support.v4.widget.NestedScrollView>-->
-    <!--</LinearLayout>-->
+        android:layout_height="match_parent"
+        android:divider="@null"/>
 
 </RelativeLayout>
 

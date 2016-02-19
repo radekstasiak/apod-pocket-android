@@ -11,23 +11,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.radek.apodpocket.images.ImageUtils;
 import com.example.radek.apodpocket.interfaces.DataInterface;
 import com.example.radek.apodpocket.model.APOD;
+import com.example.radek.apodpocket.utils.TopCenterImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
 
 public class ApodViewFragment extends Fragment implements DataInterface {
-    public static final int BACKGROUND_SHIFT = 200;
-    private ImageView mApodImageView;
-    private ImageView blurredImageView;
+    private static final int TOP_HEIGHT = 700;
+    private TopCenterImageView mApodImageView;
+    private TopCenterImageView blurredImageView;
     private TextView mTextView;
     private TextView mTitleView;
     private APOD mApodElement;
+    private ListView mList;
+    private float alpha;
 
     private static final String KEY_CONTENT = "ApodViewFragment:Content";
 
@@ -63,37 +67,16 @@ public class ApodViewFragment extends Fragment implements DataInterface {
     }
 
     private void initUI(ViewGroup rootView) throws IOException {
-        int screenHeight = ImageUtils.getScreenHeight(getActivity())
-                + BACKGROUND_SHIFT;
-        blurredImageView = (ImageView) rootView.findViewById(R.id.blured_image);
-        mApodImageView = (ImageView) rootView.findViewById(R.id.apod_view_apod_iv);
+        blurredImageView = (TopCenterImageView) rootView.findViewById(R.id.blurred_image);
+        mApodImageView = (TopCenterImageView) rootView.findViewById(R.id.apod_view_apod_iv);
+        mList = (ListView) rootView.findViewById(R.id.list);
 
-        setViewHeight(mApodImageView, screenHeight);
-        setViewHeight(blurredImageView, screenHeight);
 
-        loadBlurredImage();
+
 
     }
 
 
-    public void setViewHeight(View v, int height) {
-        ViewGroup.LayoutParams params = v.getLayoutParams();
-        params.height = height;
-        v.setLayoutParams(params);
-    }
-
-    private void loadBlurredImage() throws IOException {
-        Drawable backgroundImage = ImageUtils.drawableFromUrl(mApodElement.getUrl());
-            ImageUtils.getBlurredImage(getActivity(), backgroundImage,
-                    ImageUtils.getImageName(mApodElement.getDate()), 20,
-                    new ImageUtils.BlurEffectListener() {
-
-                        @Override
-                        public void onDone(Bitmap bitmap) {
-                            blurredImageView.setImageBitmap(bitmap);
-                        }
-                    });
-    }
 
     public static ApodViewFragment newInstance(APOD apodElement) {
         ApodViewFragment fragment = new ApodViewFragment();
