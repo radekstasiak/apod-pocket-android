@@ -36,11 +36,11 @@ import java.io.IOException;
 
 public class ApodViewFragment extends Fragment implements DataInterface {
     private static final int TOP_HEIGHT = 700;
-    public static final int BACKGROUND_SHIFT = 200;
+    public static final int BACKGROUND_SHIFT = 300;
 
-    private static final String BLURRED_IMG_PATH = "blurred_image.png";
-    private TopCenterImageView mApodImageView;
-    private TopCenterImageView mBlurredImage;
+    private String blurredImagePath;
+    private ImageView mApodImageView;
+    private ImageView mBlurredImage;
     private ScrollableImageView mBlurredImageHeader;
     private View headerView;
     private TextView mTextView;
@@ -84,8 +84,9 @@ public class ApodViewFragment extends Fragment implements DataInterface {
 
     private void initUI(ViewGroup rootView) throws IOException {
         final int screenWidth = ImageHelper.getScreenWidth(getActivity());
-        mBlurredImage = (TopCenterImageView) rootView.findViewById(R.id.blurred_image);
-        mApodImageView = (TopCenterImageView) rootView.findViewById(R.id.apod_view_apod_iv);
+        blurredImagePath="/"+mApodElement.getDate()+"_blurred.png";
+        mBlurredImage = (ImageView) rootView.findViewById(R.id.blurred_image);
+        mApodImageView = (ImageView) rootView.findViewById(R.id.apod_view_apod_iv);
         mBlurredImageHeader = (ScrollableImageView) rootView.findViewById(R.id.blurred_image_header);
 
         mList = (ListView) rootView.findViewById(R.id.list);
@@ -93,7 +94,12 @@ public class ApodViewFragment extends Fragment implements DataInterface {
 
         mBlurredImage.setAlpha(alpha);
 
-        final File blurredImage = new File(getActivity().getFilesDir() + BLURRED_IMG_PATH);
+        int screenHeight = ImageHelper.getScreenHeight(getActivity())
+                + BACKGROUND_SHIFT;
+        setViewHeight(mApodImageView, screenHeight);
+        setViewHeight(mBlurredImage, screenHeight);
+
+        final File blurredImage = new File(getActivity().getFilesDir() + blurredImagePath);
         if (!blurredImage.exists()) {
 
             // launch the progressbar in ActionBar
@@ -131,10 +137,7 @@ public class ApodViewFragment extends Fragment implements DataInterface {
             updateView(screenWidth);
 
         }
-        int screenHeight = ImageHelper.getScreenHeight(getActivity())
-                + BACKGROUND_SHIFT;
-        setViewHeight(mApodImageView, screenHeight);
-        setViewHeight(mBlurredImage, screenHeight);
+
         String[] strings = getResources().getStringArray(R.array.list_content);
 
         // Prepare the header view for our list
@@ -214,18 +217,13 @@ public class ApodViewFragment extends Fragment implements DataInterface {
         }
 
 
-        //mTextView.setText(mApodElement.getExplanation());
-        //mTitleView.setText(mApodElement.getTitle());
-
     }
     private void updateView(final int screenWidth) {
-        Bitmap bmpBlurred = BitmapFactory.decodeFile(getActivity().getFilesDir() + BLURRED_IMG_PATH);
+        Bitmap bmpBlurred = BitmapFactory.decodeFile(getActivity().getFilesDir() + blurredImagePath);
         bmpBlurred = Bitmap.createScaledBitmap(bmpBlurred, screenWidth, (int) (bmpBlurred.getHeight()
                 * ((float) screenWidth) / (float) bmpBlurred.getWidth()), false);
 
         mBlurredImage.setImageBitmap(bmpBlurred);
-
-       // mBlurredImageHeader.setoriginalImage(bmpBlurred);
     }
     public void setViewHeight(View v, int height) {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) v.getLayoutParams();
