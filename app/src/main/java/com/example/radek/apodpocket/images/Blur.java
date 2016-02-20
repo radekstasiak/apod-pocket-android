@@ -1,4 +1,4 @@
-package com.npi.blureffect;
+package com.example.radek.apodpocket.images;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Build.VERSION;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
+
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.util.Log;
@@ -14,23 +15,40 @@ public class Blur {
 
     private static final String TAG = "Blur";
 
+
+    public static Bitmap blur(Bitmap input, Context ctx){
+        RenderScript rsScript = RenderScript.create(ctx);
+        Allocation alloc = Allocation.createFromBitmap(rsScript, input);
+
+        ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(rsScript, alloc.getElement());
+        blur.setRadius(12);
+        blur.setInput(alloc);
+
+        Bitmap result = Bitmap.createBitmap(input.getWidth(), input.getHeight(), input.getConfig());
+        Allocation outAlloc = Allocation.createFromBitmap(rsScript, result);
+        blur.forEach(outAlloc);
+        outAlloc.copyTo(result);
+
+        rsScript.destroy();
+        return result;
+    }
     @SuppressLint("NewApi")
     public static Bitmap fastblur(Context context, Bitmap sentBitmap, int radius) {
 
-        if (VERSION.SDK_INT > 16) {
-            Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
-
-            final RenderScript rs = RenderScript.create(context);
-            final Allocation input = Allocation.createFromBitmap(rs, sentBitmap, Allocation.MipmapControl.MIPMAP_NONE,
-                    Allocation.USAGE_SCRIPT);
-            final Allocation output = Allocation.createTyped(rs, input.getType());
-            final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-            script.setRadius(radius /* e.g. 3.f */);
-            script.setInput(input);
-            script.forEach(output);
-            output.copyTo(bitmap);
-            return bitmap;
-        }
+//        if (VERSION.SDK_INT > 16) {
+//            Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
+//
+//            final RenderScript rs = RenderScript.create(context);
+//            final Allocation input = Allocation.createFromBitmap(rs, sentBitmap, Allocation.MipmapControl.MIPMAP_NONE,
+//                    Allocation.USAGE_SCRIPT);
+//            final Allocation output = Allocation.createTyped(rs, input.getType());
+//            final ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+//            script.setRadius(radius /* e.g. 3.f */);
+//            script.setInput(input);
+//            script.forEach(output);
+//            output.copyTo(bitmap);
+//            return bitmap;
+//        }
 
         // Stack Blur v1.0 from
         // http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html

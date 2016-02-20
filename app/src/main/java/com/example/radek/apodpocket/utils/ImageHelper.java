@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Build;
 import android.util.Log;
@@ -18,6 +19,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * This class was created by me, here and now.
@@ -51,6 +55,8 @@ public final class ImageHelper {
 
         return mContext.getResources().getDisplayMetrics().density;
     }
+
+
 
     @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
@@ -99,5 +105,21 @@ public final class ImageHelper {
             Log.d(TAG, "Error accessing file: " + e.getMessage());
         }
     }
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            // Log exception
+            return null;
+        }
+    }
+
+
 
 }
