@@ -2,12 +2,8 @@ package com.example.radek.apodpocket;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,13 +15,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ArrayAdapter;
 import android.widget.AbsListView.LayoutParams;
-import android.widget.AbsListView.OnScrollListener;
+
+import com.example.radek.apodpocket.adapter.BlurListAdapter;
 import com.example.radek.apodpocket.images.Blur;
-import com.example.radek.apodpocket.images.ImageUtils;
 import com.example.radek.apodpocket.interfaces.DataInterface;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.utils.ImageHelper;
-import com.example.radek.apodpocket.utils.TopCenterImageView;
 import com.example.radek.apodpocket.utils.ScrollableImageView;
 
 import com.squareup.picasso.Picasso;
@@ -71,80 +66,39 @@ public class ApodViewFragment extends Fragment implements DataInterface {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_apod_material, container, false);
-        try {
-            initUI(rootView);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        initUI(rootView);
+
 
         setData();
 
         return rootView;
     }
 
-    private void initUI(ViewGroup rootView) throws IOException {
-        final int screenWidth = ImageHelper.getScreenWidth(getActivity());
+    private void initUI(ViewGroup rootView)  {
+
         blurredImagePath="/"+mApodElement.getDate()+"_blurred.png";
         mBlurredImage = (ImageView) rootView.findViewById(R.id.blurred_image);
         mApodImageView = (ImageView) rootView.findViewById(R.id.apod_view_apod_iv);
         mBlurredImageHeader = (ScrollableImageView) rootView.findViewById(R.id.blurred_image_header);
-
         mList = (ListView) rootView.findViewById(R.id.list);
-        mBlurredImageHeader.setScreenWidth(screenWidth);
 
-        mBlurredImage.setAlpha(alpha);
 
-        int screenHeight = ImageHelper.getScreenHeight(getActivity())
-                + BACKGROUND_SHIFT;
-        setViewHeight(mApodImageView, screenHeight);
-        setViewHeight(mBlurredImage, screenHeight);
 
-        final File blurredImage = new File(getActivity().getFilesDir() + blurredImagePath);
-        if (!blurredImage.exists()) {
-
-            // launch the progressbar in ActionBar
-            //setProgressBarIndeterminateVisibility(true);
-
-            new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-
-                    // No image found => let's generate it!
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 2;
-                    //Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.image, options);
-                    Bitmap image = ImageHelper.getBitmapFromURL(mApodElement.getUrl());
-                    Bitmap newImg = Blur.fastblur(getActivity(), image, 12);
-                    ImageHelper.storeImage(newImg, blurredImage);
-                    getActivity().runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            updateView(screenWidth);
-
-                            // And finally stop the progressbar
-                            // setProgressBarIndeterminateVisibility(false);
-                        }
-                    });
-
-                }
-            }).start();
-
-        } else {
-
-            // The image has been found. Let's update the view
-            updateView(screenWidth);
-
-        }
-
-        String[] strings = getResources().getStringArray(R.array.list_content);
-
-        // Prepare the header view for our list
+        initImages();
         headerView = new View(getActivity());
         headerView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, TOP_HEIGHT));
+        initList();
+
+    }
+
+    private void initList() {
+        //String[] strings = getResources().getStringArray(R.array.list_content);
+        //String[] strings = mApodElement.getExplanation().split(" ");
+        String[] strings = new String[] {mApodElement.getExplanation()};
         mList.addHeaderView(headerView);
-        mList.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.list_item, strings));
+        //mList.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.list_item, strings));
+        mList.setAdapter(new BlurListAdapter(getActivity(),mApodElement));
         mList.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override
@@ -168,21 +122,70 @@ public class ApodViewFragment extends Fragment implements DataInterface {
 
                 // Apply on the ImageView if needed
                 //if (mSwitch.isChecked()) {
-                    mBlurredImage.setAlpha(alpha);
+                mBlurredImage.setAlpha(alpha);
                 //}
 
                 // Parallax effect : we apply half the scroll amount to our
                 // three views
                 mBlurredImage.setTop(headerView.getTop() / 2);
                 mApodImageView.setTop(headerView.getTop() / 2);
-                //mBlurredImageHeader.handleScroll(headerView.getTop() / 2);
+                mBlurredImageHeader.handleScroll(headerView.getTop() / 2);
 
             }
         });
-
-
     }
 
+
+    private void initImages() {
+        final int screenWidth = ImageHelper.getScreenWidth(getActivity());
+        int screenHeight = ImageHelper.getScreenHeight(getActivity())
+                + BACKGROUND_SHIFT;
+
+        mBlurredImageHeader.setScreenWidth(screenWidth);
+        mBlurredImage.setAlpha(alpha);
+        setViewHeight(mApodImageView, screenHeight);
+        setViewHeight(mBlurredImage, screenHeight);
+
+        final File blurredImage = new File(getActivity().getFilesDir() + blurredImagePath);
+        if (!blurredImage.exists()) {
+
+            // launch the progressbar in ActionBar
+            //setProgressBarIndeterminateVisibility(true);
+
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    // No image found => let's generate it!
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inSampleSize = 2;
+                    Bitmap image = ImageHelper.getBitmapFromURL(mApodElement.getUrl());
+                    Bitmap newImg = Blur.fastblur(getActivity(), image, 12);
+                    ImageHelper.storeImage(newImg, blurredImage);
+                    getActivity().runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            updateView(screenWidth);
+
+                            // And finally stop the progressbar
+                            // setProgressBarIndeterminateVisibility(false);
+                        }
+                    });
+
+                }
+
+            }).start();
+
+        } else {
+
+            // The image has been found. Let's update the view
+            updateView(screenWidth);
+
+        }
+
+    }
 
 
     public static ApodViewFragment newInstance(APOD apodElement) {
