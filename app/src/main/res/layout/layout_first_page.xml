@@ -7,7 +7,6 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:paddingBottom="7dp"
         android:paddingLeft="10dp"
         android:shadowColor="#000"

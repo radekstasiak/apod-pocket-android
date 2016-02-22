@@ -64,8 +64,8 @@ public class BlurListAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.layout_first_page,
                     parent, false);
             ViewGroup.LayoutParams params = convertView.getLayoutParams();
-            params.height = screenHeight;
-            convertView.setLayoutParams(params);
+            //params.height = screenHeight;
+            //convertView.setLayoutParams(params);
             TextView tv = (TextView) convertView.findViewById(R.id.title);
             tv.setText(apodElement.getTitle());
             convertView.setId(R.id.id0);

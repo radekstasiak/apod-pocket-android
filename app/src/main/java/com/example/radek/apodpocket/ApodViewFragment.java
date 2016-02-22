@@ -2,6 +2,7 @@ package com.example.radek.apodpocket;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -86,8 +87,7 @@ public class ApodViewFragment extends Fragment implements DataInterface {
 
 
         initImages();
-        headerView = new View(getActivity());
-        headerView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, TOP_HEIGHT));
+
         initList();
 
     }
@@ -96,9 +96,11 @@ public class ApodViewFragment extends Fragment implements DataInterface {
         //String[] strings = getResources().getStringArray(R.array.list_content);
         //String[] strings = mApodElement.getExplanation().split(" ");
         String[] strings = new String[] {mApodElement.getExplanation()};
+        headerView = new View(getActivity());
+        headerView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,ImageHelper.getScreenHeight(getActivity())-100));
         mList.addHeaderView(headerView);
         //mList.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.list_item, strings));
-        mList.setAdapter(new BlurListAdapter(getActivity(),mApodElement));
+        mList.setAdapter(new BlurListAdapter(getActivity(), mApodElement));
         mList.setOnScrollListener(new AbsListView.OnScrollListener() {
 
             @Override
@@ -114,7 +116,7 @@ public class ApodViewFragment extends Fragment implements DataInterface {
 
                 // Calculate the ratio between the scroll amount and the list
                 // header weight to determinate the top picture alpha
-                alpha = (float) -headerView.getTop() / (float) TOP_HEIGHT;
+                alpha = (float) -headerView.getTop() / ((float) ImageHelper.getScreenHeight(getActivity())-100);
                 // Apply a ceil
                 if (alpha > 1) {
                     alpha = 1;
@@ -139,7 +141,7 @@ public class ApodViewFragment extends Fragment implements DataInterface {
     private void initImages() {
         final int screenWidth = ImageHelper.getScreenWidth(getActivity());
         int screenHeight = ImageHelper.getScreenHeight(getActivity())
-                + BACKGROUND_SHIFT;
+                + ImageHelper.getScreenHeight(getActivity())/2;
 
         mBlurredImageHeader.setScreenWidth(screenWidth);
         mBlurredImage.setAlpha(alpha);
@@ -161,8 +163,11 @@ public class ApodViewFragment extends Fragment implements DataInterface {
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inSampleSize = 2;
                     Bitmap image = ImageHelper.getBitmapFromURL(mApodElement.getUrl());
-                    Bitmap newImg = Blur.fastblur(getActivity(), image, 12);
-                    ImageHelper.storeImage(newImg, blurredImage);
+                    if(image!=null) {
+                        Bitmap newImg = Blur.fastblur(getActivity(), image, 12);
+                        ImageHelper.storeImage(newImg, blurredImage);
+                    }
+
                     getActivity().runOnUiThread(new Runnable() {
 
                         @Override
@@ -223,10 +228,13 @@ public class ApodViewFragment extends Fragment implements DataInterface {
     }
     private void updateView(final int screenWidth) {
         Bitmap bmpBlurred = BitmapFactory.decodeFile(getActivity().getFilesDir() + blurredImagePath);
-        bmpBlurred = Bitmap.createScaledBitmap(bmpBlurred, screenWidth, (int) (bmpBlurred.getHeight()
-                * ((float) screenWidth) / (float) bmpBlurred.getWidth()), false);
+        if(bmpBlurred!=null){
+            bmpBlurred = Bitmap.createScaledBitmap(bmpBlurred, screenWidth, (int) (bmpBlurred.getHeight()
+                    * ((float) screenWidth) / (float) bmpBlurred.getWidth()), false);
+            mBlurredImage.setImageBitmap(bmpBlurred);
+        }
 
-        mBlurredImage.setImageBitmap(bmpBlurred);
+
     }
     public void setViewHeight(View v, int height) {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) v.getLayoutParams();
