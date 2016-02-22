@@ -77,10 +77,10 @@ public class BlurListAdapter extends BaseAdapter {
     private View getSecondView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = layoutInflater.inflate(
-                    android.R.layout.simple_list_item_1, parent, false);
+                    R.layout.list_item, parent, false);
         }
 
-        TextView txt = (TextView) convertView;
+        TextView txt = (TextView) convertView.findViewById(R.id.text1);
         txt.setText(apodElement.getExplanation());
 
         return convertView;

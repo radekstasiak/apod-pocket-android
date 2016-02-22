@@ -5,18 +5,20 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="7dp"
         android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:shadowColor="#000"
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="10"
         android:text="04:36"
+        android:background="#6666"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#FFF"
-        android:textSize="15sp"
+        android:textSize="25sp"
         android:listSelector="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"/>
 
