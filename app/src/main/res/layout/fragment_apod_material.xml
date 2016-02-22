@@ -5,7 +5,11 @@
     android:layout_height="match_parent"
     android:background="@color/turquise">
 
-
+    <FrameLayout
+        android:id="@+id/parallaxContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
     <ImageView
         android:id="@+id/apod_view_apod_iv"
         android:layout_width="match_parent"
@@ -38,6 +42,7 @@
             android:clickable="false"
             android:layout_height="50dp" />
 
+    </FrameLayout>
     </FrameLayout>
 
 </FrameLayout>

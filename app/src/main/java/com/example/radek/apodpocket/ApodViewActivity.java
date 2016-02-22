@@ -16,6 +16,7 @@ import com.example.radek.apodpocket.interfaces.DataInterface;
 import com.example.radek.apodpocket.model.APOD;
 import com.example.radek.apodpocket.network.APIUtils;
 import com.example.radek.apodpocket.utils.StorageMenagerHelper;
+import com.xgc1986.parallaxPagerTransformer.ParallaxPagerTransformer;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -70,7 +71,7 @@ public class ApodViewActivity extends AppCompatActivity implements DataInterface
         mPagerAdapter = new ApodViewAdapter(getSupportFragmentManager(), mApodsList);
         mPager.setAdapter(mPagerAdapter);
         mPager.setCurrentItem(currentApodId);
-
+        mPager.setPageTransformer(false, new ParallaxPagerTransformer(R.id.parallaxContent));
         mPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
