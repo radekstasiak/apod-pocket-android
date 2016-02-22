@@ -16,6 +16,8 @@
         android:text="04:36"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#FFF"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:listSelector="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"/>
 
 </RelativeLayout>

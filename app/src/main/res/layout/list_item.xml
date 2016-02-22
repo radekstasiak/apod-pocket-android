@@ -10,5 +10,7 @@
     android:background="#99333333"
     android:paddingStart="10dp"
     android:paddingEnd="10dp"
+    android:listSelector="@android:color/transparent"
+    android:cacheColorHint="@android:color/transparent"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     />
