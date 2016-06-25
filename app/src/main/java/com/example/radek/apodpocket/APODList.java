@@ -135,6 +135,11 @@ public class APODList extends AppCompatActivity implements DataInterface {
 
             }
 
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+
 
         });
     }
